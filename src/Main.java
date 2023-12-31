@@ -1,50 +1,21 @@
-import java.util.Scanner;
+import classes.Epic;
+import classes.Status;
+import classes.Subtask;
+import managers.TaskManager;
+
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         TaskManager taskManager = new TaskManager();
-        String command = "0";
-        while (!command.equals("9")){
-            System.out.println("1 - вывести все звдвчи\n" +
-                    "2 - удалить задачу\n" +
-                    "3 - удалить подзадачу\n" +
-                    "4 - удалить эпик\n" +
-                    "5 - удалить все задачи(эпики и подзадачи в том числе)\n" +
-                    "6 - создать задачу\n" +
-                    "7 - вывести все подзадачи в эпике\n" +
-                    "9 - выход");
-
-            command = scanner.nextLine();
-            switch (command) {
-                case "1":
-                    taskManager.printAllTasks();
-                    break;
-                case "2":
-                    System.out.println("id Задачи:");
-                    taskManager.deleteTaskById(scanner.nextInt());
-                    break;
-                case "3":
-                    System.out.println("id Подзадачи:");
-                    taskManager.deleteSubById(scanner.nextInt());
-                    break;
-                case "4":
-                    System.out.println("id Эпика:");
-                    taskManager.deleteEpicById(scanner.nextInt());
-                    break;
-                case "5":
-                    taskManager.deleteAllTasks();
-                    break;
-                case "6":
-                    taskManager.createTask();
-                    break;
-                case "7":
-                    taskManager.printSubtasksInEpic();
-                    break;
-                default:
-                    System.out.println("Такой команды нет");
-                    break;
-            }
-        }
+        taskManager.createTask(new classes.Task("первая задача", "описание один", 0, Status.NEW));
+        taskManager.createTask(new classes.Task("вторая задача", "описание два", 0, Status.DONE));
+        taskManager.createEpic(new classes.Epic("первый эпик", "описание одинепик", 0, Status.NEW));
+        taskManager.createSubTask(new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 0, 2));
+        taskManager.createEpic(new classes.Epic("второй эпик", "описание одинепик", 0, Status.NEW));
+        taskManager.createSubTask(new Subtask("первый саб_епик2", "описание одинсаб", Status.NEW, 0, 4));
+        taskManager.createSubTask(new Subtask("второй саб_епик2", "описание двасаб", Status.IN_PROGRESS, 0, 4));
+        System.out.println(taskManager.getTasks());
+        System.out.println(taskManager.getEpics());
+        System.out.println(taskManager.getSubtasks());
     }
 }
