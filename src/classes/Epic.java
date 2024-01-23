@@ -31,4 +31,8 @@ public class Epic extends Task {
         this.subtasks = subtasks;
     }
 
+    public void deleteSubTasks() {
+        subtasks.clear();
+    }
+
 }

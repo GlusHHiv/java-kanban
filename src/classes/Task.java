@@ -5,7 +5,7 @@ import classes.Status;
 public class Task {
     private String name;
     private String description;
-    private  int id;
+    private  Integer id;
     protected Status status;
 
     public Task(String name, String description, Integer id, Status status) {
@@ -17,10 +17,6 @@ public class Task {
         this.id = id;
         this.status = status;
     }
-
-    /*//public void setId(int id) {
-        this.id = id;
-    }*/
 
     @Override
     public String toString() {
