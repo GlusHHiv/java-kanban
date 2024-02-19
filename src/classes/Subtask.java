@@ -1,12 +1,14 @@
 package classes;
 
 import classes.Status;
+import managers.Managers;
 
 public class Subtask extends Task {
-    private final int epicId;
-    public Subtask(String name, String description, Status status, Integer id, int epicId) {
+    private final Integer epicId;
+    private final Managers managers = new Managers();
+    public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
         super(name, description, id, status);
-        this.epicId = epicId;
+        this.epicId = setEpicId(epicId);
     }
 
     @Override
@@ -18,7 +20,15 @@ public class Subtask extends Task {
     }
 
 
-    public int getEpicId() {
+    public Integer getEpicId() {
         return epicId;
     }
+
+    public Integer setEpicId(int id) {
+        if(!managers.getDefault().getEpics().contains(managers.getDefault().getEpicById(id))) {
+            return null;
+        }
+        return id;
+    }
+
 }

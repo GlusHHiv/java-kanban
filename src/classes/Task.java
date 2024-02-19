@@ -5,15 +5,12 @@ import classes.Status;
 public class Task {
     private String name;
     private String description;
-    private  Integer id;
-    protected Status status;
+    private Integer id;
+    private Status status;
 
     public Task(String name, String description, Integer id, Status status) {
         this.name = name;
         this.description = description;
-        if(id == null) {
-            id = 0;
-        }
         this.id = id;
         this.status = status;
     }
