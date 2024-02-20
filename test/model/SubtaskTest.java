@@ -1,35 +1,32 @@
 package model;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 class SubtaskTest {
-     private final Subtask subtask = new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 1);
 
-    @Test
-    public void shouldReturnTheSameNameAsIntended() {
-        Assertions.assertEquals("первый саб_епик1", subtask.getName());
+    private Subtask subtask;
+
+    @BeforeEach
+    public void beforeEach() {
+        subtask = new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0);
     }
+     @Test
+     public void setEpicId_addSubtaskAsEpic() {
+         subtask.setEpicId(1);
+         Assertions.assertNotNull(subtask, "Сабтаск не создан");
+         Assertions.assertNotEquals(1, subtask.getEpicId(), "Сабтаск добавил самого себя в эпик");
+     }
 
-    @Test
-    public void shouldReturnTheSameDescrtiptionAsIntended() {
-        Assertions.assertEquals("описание одинсаб", subtask.getDescription());
-    }
-
-    @Test
-    public void shouldReturnTheSameStatusAsIntended() {
-        Assertions.assertEquals(Status.NEW, subtask.getStatus());
-    }
-
-    @Test
-    public void shouldReturnTheSameIdAsIntended() {
-        Assertions.assertEquals(1, subtask.getId());
-    }
-
-    @Test
-    public void shouldReturnTheSameEpicIdAsIntended() {
-        Assertions.assertEquals(1, subtask.getEpicId());
-    }
-
+     @Test
+     public void equals_compareSameSubtasks() {
+         Assertions.assertTrue(subtask.equals(new Subtask("первый саб_епик1",
+                 "описание одинсаб",
+                 Status.NEW,
+                 1,
+                 0)), "Одинаковые сабтаски не равны.");
+     }
 }

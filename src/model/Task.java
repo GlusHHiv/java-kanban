@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Task {
     private String name;
     private String description;
@@ -52,6 +54,18 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        Task otherTask = (Task) obj;
+        return Objects.equals(name, otherTask.name) &&
+                Objects.equals(description, otherTask.description) &&
+                Objects.equals(id, otherTask.id) &&
+                Objects.equals(status, otherTask.status);
     }
 }
 

@@ -1,4 +1,4 @@
-package managers;
+package managers.task;
 
 import model.Epic;
 import model.Subtask;
@@ -46,5 +46,5 @@ public interface TaskManager {
 
     Task getTaskById(int id);
 
-    List<Task> getHistory();
+    List<Task> getHistoryFromTaskManager();
 }

@@ -1,12 +1,12 @@
 package managers;
 
+import managers.history.InMemoryHistoryManager;
+import managers.task.InMemoryTaskManager;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ManagersTest {
     private static final Managers managers = new Managers();

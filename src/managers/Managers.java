@@ -1,7 +1,10 @@
 package managers;
 
 
-import java.util.ArrayList;
+import managers.history.HistoryManager;
+import managers.history.InMemoryHistoryManager;
+import managers.task.InMemoryTaskManager;
+import managers.task.TaskManager;
 
 public class Managers {
 

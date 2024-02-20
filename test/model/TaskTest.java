@@ -8,27 +8,11 @@ import org.junit.jupiter.api.Test;
 class TaskTest {
     private final Task task = new Task("первая задача", "описание один", 0, Status.NEW);
 
-
     @Test
-    public void shouldReturnTheSameNameAsIntended() {
-        Assertions.assertEquals("первая задача", task.getName());
+    public void equals_compareSameTasks() {
+        Assertions.assertTrue(task.equals(new Task("первая задача",
+                "описание один",
+                0,
+                Status.NEW)), "Одинаковые таски не равны.");
     }
-
-    @Test
-    public void shouldReturnTheSameDescrtiptionAsIntended() {
-        Assertions.assertEquals("описание один", task.getDescription());
-    }
-
-    @Test
-    public void shouldReturnTheSameStatusAsIntended() {
-        Assertions.assertEquals(Status.NEW, task.getStatus());
-    }
-
-    @Test
-    public void shouldReturnTheSameIdAsIntended() {
-        Assertions.assertEquals(0, task.getId());
-    }
-
-
-
 }

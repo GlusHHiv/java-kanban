@@ -1,5 +1,6 @@
-package managers;
+package managers.task;
 
+import managers.history.HistoryManager;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -22,12 +23,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void createSubTask(Subtask subtask){
         subtask.setId(getId());
-        if(!isEpicExist(subtask.getEpicId())) {
-            subtasks.put(subtask.getId(), new Subtask(subtask.getName(),
+        if(!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
+            tasks.put(subtask.getId(), new Task (subtask.getName(),
                     subtask.getDescription(),
-                    subtask.getStatus(),
                     subtask.getId(),
-                    null));
+                    subtask.getStatus()));
                     return;
         }
         subtasks.put(subtask.getId(), subtask);
@@ -218,14 +218,14 @@ public class InMemoryTaskManager implements TaskManager {
         return tasks.get(id);
     }
 
-    public void addSubtaskToEpic(int epicId, int subId) {
+    private void addSubtaskToEpic(int epicId, int subId) {
         if(!(subtasks.containsKey(subId))){
             return;
         }
         epics.get(epicId).addSubtasks(subId);
     }
 
-    public boolean isEpicExist(int id) {
+    private boolean isEpicExist(Integer id) {
         if (!epics.containsKey(id)) {
             return false;
         }
@@ -233,7 +233,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-     public List<Task> getHistory() {
+    public List<Task> getHistoryFromTaskManager() {
         return historyManager.getHistory();
     }
 

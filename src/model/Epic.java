@@ -3,6 +3,7 @@ package model;
 import managers.Managers;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Integer> subtasks = new ArrayList<>();
@@ -12,8 +13,10 @@ public class Epic extends Task {
 
     }
 
-    public void addSubtasks(int id) {
-        subtasks.add(id);
+    public void addSubtasks(int subId) {
+        if (getId() != subId) {
+            subtasks.add(subId);
+        }
     }
 
     @Override
@@ -35,6 +38,19 @@ public class Epic extends Task {
 
     public void deleteSubTasks() {
         subtasks.clear();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        Epic otherEpic = (Epic) obj;
+        return Objects.equals(getName(), otherEpic.getName()) &&
+                Objects.equals(getDescription(), otherEpic.getDescription()) &&
+                Objects.equals(getId(), otherEpic.getId()) &&
+                Objects.equals(getStatus(), otherEpic.getStatus()) &&
+                Objects.deepEquals(getSubtasks(), otherEpic.getSubtasks());
     }
 
 }
