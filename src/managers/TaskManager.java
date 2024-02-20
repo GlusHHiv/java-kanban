@@ -1,10 +1,11 @@
 package managers;
 
-import classes.Epic;
-import classes.Subtask;
-import classes.Task;
+import model.Epic;
+import model.Subtask;
+import model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     void createSubTask(Subtask subtask);
@@ -45,5 +46,5 @@ public interface TaskManager {
 
     Task getTaskById(int id);
 
-
+    List<Task> getHistory();
 }

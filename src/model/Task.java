@@ -1,6 +1,4 @@
-package classes;
-
-import classes.Status;
+package model;
 
 public class Task {
     private String name;

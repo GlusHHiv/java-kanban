@@ -1,26 +1,39 @@
 package managers;
 
-import classes.Epic;
-import classes.Status;
-import classes.Subtask;
-import classes.Task;
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 public class InMemoryTaskManager implements TaskManager {
     private static final HashMap<Integer, Task> tasks = new HashMap<>();
-    private static final HashMap<Integer, classes.Subtask> subtasks = new HashMap<>();
+    private static final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
     private static final HashMap<Integer, Epic> epics = new HashMap<>();
     private static int id = 0;
-    private final static InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+    private static HistoryManager historyManager;
 
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
     @Override
     public void createSubTask(Subtask subtask){
         subtask.setId(getId());
+        if(!isEpicExist(subtask.getEpicId())) {
+            subtasks.put(subtask.getId(), new Subtask(subtask.getName(),
+                    subtask.getDescription(),
+                    subtask.getStatus(),
+                    subtask.getId(),
+                    null));
+                    return;
+        }
         subtasks.put(subtask.getId(), subtask);
-        epics.get(subtask.getEpicId()).addSubtasks(subtask.getId(), subtask);
+        addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
         updateEpicStatus(epics.get(subtask.getEpicId()));
+
 
     }
 
@@ -115,7 +128,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtaskById(Integer subId) {
         if(!subtasks.containsKey(subId)) {
-            System.out.println("НЕТ");
             return;
         }
         epics.get(subtasks.get(subId).getEpicId()).getSubtasks().remove(subId);
@@ -189,16 +201,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int id) {
-        historyManager.checkSizeOfHistory();
-        historyManager.getHistory().add(epics.get(id));
         historyManager.add(epics.get(id));
         return epics.get(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        historyManager.checkSizeOfHistory();
-        historyManager.getHistory().add(subtasks.get(id));
         historyManager.add(subtasks.get(id));
         return subtasks.get(id);
 
@@ -206,36 +214,28 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        historyManager.checkSizeOfHistory();
-        historyManager.getHistory().add(tasks.get(id));
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }
 
-    public static void printAllTasks(Managers manager) {
-        System.out.println("Задачи:");
-        for (Task task : manager.getDefault().getTasks()) {
-            System.out.println(task);
+    public void addSubtaskToEpic(int epicId, int subId) {
+        if(!(subtasks.containsKey(subId))){
+            return;
         }
-        System.out.println("Эпики:");
-        for (Task epic : manager.getDefault().getEpics()) {
-            System.out.println(epic);
-
-            for (Task task : manager.getDefault().getEpicSubtasks(epic.getId())) {
-                System.out.println("--> " + task);
-            }
-        }
-        System.out.println("Подзадачи:");
-        for (Task subtask : manager.getDefault().getSubtasks()) {
-            System.out.println(subtask);
-        }
-
-        System.out.println("История:");
-        for (Task task : manager.getDefaultHistory().getHistory()) {
-            System.out.println(task);
-        }
+        epics.get(epicId).addSubtasks(subId);
     }
 
+    public boolean isEpicExist(int id) {
+        if (!epics.containsKey(id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+     public List<Task> getHistory() {
+        return historyManager.getHistory();
+    }
 
 
 

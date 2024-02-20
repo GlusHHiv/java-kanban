@@ -2,33 +2,32 @@ package managers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import classes.Status;
-import classes.Task;
+import model.Status;
+import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class InMemoryHistoryManagerTest {
-    private static final Managers managers = new Managers();
+    private static final InMemoryHistoryManager managers = new InMemoryHistoryManager();
     private static final Task task = new Task("Test addNewTask", "Test addNewTask description", 0, Status.NEW);
 
     @BeforeAll
     public static void beforeAll() {
-        managers.getDefault().createTask(task);
-        managers.getDefaultHistory().add(task);
+        managers.add(task);
     }
 
     
     @Test
-    public void add() {
-        final List<Task> history = managers.getDefaultHistory().getHistory();
+    public void shouldConsist1ElementInHistory() {
+        final List<Task> history = managers.getHistory();
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");
     }
 
     @Test
-    public void compareTasksInHistoryAndManager() {
-        Assertions.assertEquals(task, managers.getDefaultHistory().getHistory().get(0), "Задачи не равны");
+    public void shouldBeFilledWithOneTask() {
+        Assertions.assertEquals(task, managers.getHistory().get(0), "Задачи не равны");
     }
 }

@@ -1,13 +1,14 @@
 package managers;
 
 
+import java.util.ArrayList;
+
 public class Managers {
-    private final static InMemoryTaskManager taskManager = new InMemoryTaskManager();
-    private final static InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-    public static InMemoryTaskManager getDefault() {
-        return taskManager;
+
+    public static TaskManager getDefault() {
+        return new InMemoryTaskManager(new InMemoryHistoryManager());
     }
     public static HistoryManager getDefaultHistory() {
-        return historyManager;
+        return new InMemoryHistoryManager();
     }
 }

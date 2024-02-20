@@ -1,6 +1,6 @@
 package managers;
 
-import classes.Task;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,6 @@ public class InMemoryHistoryManager implements HistoryManager{
     public List<Task> getHistory() {
 
         return history;
-    }
-
-    public void checkSizeOfHistory() {
-        if(history.size() >= 10) {
-            history.remove(0);
-        }
     }
 
     @Override
