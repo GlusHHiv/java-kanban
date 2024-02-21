@@ -24,11 +24,12 @@ public class Subtask extends Task {
         return epicId;
     }
 
-    public void setEpicId(int epicId) {
-        if(epicId != getId()) {
-            this.epicId = epicId;
+    public boolean setEpicId(int epicId) {
+        if(epicId == getId()) {
+            System.out.println("Ошибка.");
+            return false;
         }
-
+        return true;
     }
 
     @Override

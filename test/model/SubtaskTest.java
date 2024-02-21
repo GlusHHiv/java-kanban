@@ -18,7 +18,7 @@ class SubtaskTest {
      public void setEpicId_addSubtaskAsEpic() {
          subtask.setEpicId(1);
          Assertions.assertNotNull(subtask, "Сабтаск не создан");
-         Assertions.assertNotEquals(1, subtask.getEpicId(), "Сабтаск добавил самого себя в эпик");
+         Assertions.assertFalse(subtask.setEpicId(1), "Сабтаск добавил самого себя в эпик");
      }
 
      @Test

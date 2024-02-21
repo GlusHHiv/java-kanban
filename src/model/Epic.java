@@ -13,10 +13,15 @@ public class Epic extends Task {
 
     }
 
-    public void addSubtasks(int subId) {
-        if (getId() != subId) {
-            subtasks.add(subId);
+    public boolean addSubtasks(int subId) { //В менеджере есть логика по
+                                            // которой сабтаск не может быть добавлен в эпик
+                                            //если он не содержится в списке менеджера.
+        if (getId() == subId) {
+            System.out.println("Ошибка.");
+            return false;
         }
+        subtasks.add(subId);
+        return true;
     }
 
     @Override
