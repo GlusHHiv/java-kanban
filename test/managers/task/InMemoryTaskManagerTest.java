@@ -101,16 +101,12 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void createSubtask_reforamateSubtaskWithWrongEpicIdIntoTask() {
+    public void createSubtask_createSubtaskWithInvalidEpicId() {
         int initialSubtasksSize = taskManager.getSubtasks().size();
-        int initialTasksSize = taskManager.getTasks().size();
         taskManager.createSubTask(new Subtask("subtest", "subtest", Status.NEW, 0, 1));
         Assertions.assertEquals(taskManager.getSubtasks().size(),
                 initialSubtasksSize,
                 "Сабтаск добавился в список сабтасков.");
-        Assertions.assertEquals(initialTasksSize + 1,
-                taskManager.getTasks().size(),
-                "Список Задач не пополнился.");
     }
 
 

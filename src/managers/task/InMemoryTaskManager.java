@@ -24,11 +24,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void createSubTask(Subtask subtask){
         subtask.setId(getId());
         if(!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
-            tasks.put(subtask.getId(), new Task (subtask.getName(),
-                    subtask.getDescription(),
-                    subtask.getId(),
-                    subtask.getStatus()));
-                    return;
+            System.out.println("Ошибка с Эпик id.");
+            return;
         }
         subtasks.put(subtask.getId(), subtask);
         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
