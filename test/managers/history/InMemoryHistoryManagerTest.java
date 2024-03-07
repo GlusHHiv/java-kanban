@@ -30,9 +30,30 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    public void add_addTwoSameTasksToHistory() {
+        int innitialHistorySize = historyManager.getHistory().size();
+        historyManager.add(task);
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW));
+        historyManager.add(task);
+        final List<Task> history = historyManager.getHistory();
+        System.out.println(history.get(0));
+        Assertions.assertEquals(history.size(), innitialHistorySize + 2);
+    }
+
+    @Test
     public void add_addTaskToHistoryAndCompare() {
         int innitialHistorySize = historyManager.getHistory().size();
         historyManager.add(task);
         Assertions.assertEquals(task, historyManager.getHistory().get(innitialHistorySize), "Задачи не равны.");
+    }
+
+    @Test
+    public void getHistory() {
+        int innitialHistorySize = historyManager.getHistory().size();
+        historyManager.add(task);
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW));
+        final List<Task> history = historyManager.getHistory();
+        System.out.println(history);
+        Assertions.assertEquals(innitialHistorySize + 2, historyManager.getHistory().size());
     }
 }
