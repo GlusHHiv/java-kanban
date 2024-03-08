@@ -16,7 +16,7 @@ public class Epic extends Task {
                                             // которой сабтаск не может быть добавлен в эпик
                                             //если он не содержится в списке менеджера.
         if (getId() == subId) {
-            System.out.println("Ошибка.");
+            System.out.println("ОшибкаЭ.");
             return false;
         }
         subtasks.add(subId);

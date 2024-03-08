@@ -25,6 +25,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void createSubTask(Subtask subtask) {
         subtask.setId(getId());
         if (!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
+            System.out.println(epics);
             System.out.println("Ошибка с Эпик id.");
             return;
         }
@@ -99,7 +100,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtasks(Subtask subtask) {
-        if (!epics.get(subtasks.get(subtask.getId()).getEpicId()).getSubtasks().contains(subtask.getId())) {
+        if (!subtasks.containsKey(subtask.getId()) ||
+                !epics.containsKey(subtask.getEpicId()) ||
+                !epics.get(subtask.getEpicId()).getSubtasks().contains(subtask.getId())) {
             return;
         }
         subtasks.put(subtask.getId(), subtask);
@@ -251,8 +254,7 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-
-
-
-
+    public void resetId() {
+        id = 0;
+    }
 }
