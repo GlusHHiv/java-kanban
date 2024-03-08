@@ -1,9 +1,7 @@
 package model;
 
 
-import java.net.StandardSocketOptions;
 import java.util.HashMap;
-import java.util.List;
 import java.util.LinkedList;
 
 public class LinkedMapList<T> extends LinkedList {

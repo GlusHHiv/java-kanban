@@ -1,7 +1,5 @@
 package model;
 
-import managers.Managers;
-
 import java.util.Objects;
 
 public class Subtask extends Task {
