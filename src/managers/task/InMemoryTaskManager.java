@@ -9,7 +9,6 @@ import model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private static final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -21,10 +20,11 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
+
     @Override
-    public void createSubTask(Subtask subtask){
+    public void createSubTask(Subtask subtask) {
         subtask.setId(getId());
-        if(!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
+        if (!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
             System.out.println("Ошибка с Эпик id.");
             return;
         }
@@ -36,7 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createTask(Task task){
+    public void createTask(Task task) {
         task.setId(getId());
         tasks.put(task.getId(), task);
     }
@@ -131,7 +131,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskById(int taskId) {
-        if(!tasks.containsKey(taskId)) {
+        if (!tasks.containsKey(taskId)) {
             return;
         }
         tasks.remove(taskId);
@@ -140,7 +140,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtaskById(Integer subId) {
-        if(!subtasks.containsKey(subId)) {
+        if (!subtasks.containsKey(subId)) {
             return;
         }
         epics.get(subtasks.get(subId).getEpicId()).getSubtasks().remove(subId);
@@ -171,7 +171,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.NEW);
             return;
         }
-        if(doneCount == subtasks.size()) {
+        if (doneCount == subtasks.size()) {
             epic.setStatus(Status.DONE);
             return;
         }
@@ -233,7 +233,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void addSubtaskToEpic(int epicId, int subId) {
-        if(!(subtasks.containsKey(subId))){
+        if (!(subtasks.containsKey(subId))) {
             return;
         }
         epics.get(epicId).addSubtasks(subId);
