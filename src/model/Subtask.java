@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Subtask extends Task {
     private  Integer epicId;
+
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
         super(name, description, id, status);
         setEpicId(epicId);
