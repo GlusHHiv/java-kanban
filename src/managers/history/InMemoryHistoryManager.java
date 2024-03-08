@@ -2,9 +2,6 @@ package managers.history;
 
 import model.Task;
 
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
 import java.util.List;
 import model.LinkedMapList;
 
@@ -28,7 +25,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (!history.contains(id)) {
             return;
         }
-        history.remove(id);
+        history.removeElement(id);
     }
 
 }
