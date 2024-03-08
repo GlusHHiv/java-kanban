@@ -28,7 +28,7 @@ public class LinkedMapList<T> extends LinkedList {
         final Node<T> newNode = new Node<>(null, last, data);
         innternalHashMap.put(id, newNode);
         tail = newNode;
-        if(last == null) {
+        if (last == null) {
             head = newNode;
         } else {
             last.next = newNode;
@@ -92,7 +92,7 @@ public class LinkedMapList<T> extends LinkedList {
     @Override
     public String toString() {
         String returnmentString = "";
-        for(Node<T> nodeData : innternalHashMap.values()) {
+        for (Node<T> nodeData : innternalHashMap.values()) {
             returnmentString += ("{" + nodeData.data.toString()) + "\n";
         }
         return returnmentString + "}";
