@@ -6,7 +6,8 @@ import java.util.List;
 import model.LinkedMapList;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private  final static LinkedMapList<Task> history = new LinkedMapList<>();
+    private final LinkedMapList<Task> history = new LinkedMapList<>();
+
     @Override
     public List<Task> getHistory() {
         return history;
