@@ -25,7 +25,6 @@ public class Subtask extends Task {
 
     public boolean setEpicId(int epicId) {
         if (epicId == getId()) {
-            System.out.println("Ошибка.");
             return false;
         }
         return true;

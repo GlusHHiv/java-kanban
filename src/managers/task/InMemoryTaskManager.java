@@ -22,30 +22,29 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void createSubTask(Subtask subtask) {
+    public Subtask createSubTask(Subtask subtask) {
         subtask.setId(getId());
         if (!isEpicExist(subtask.getEpicId())) { // Проверка на наличие эпика с id: epicId
-            System.out.println(epics);
-            System.out.println("Ошибка с Эпик id.");
-            return;
+            return null;
         }
         subtasks.put(subtask.getId(), subtask);
         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
         updateEpicStatus(epics.get(subtask.getEpicId()));
-
-
+        return subtask;
     }
 
     @Override
-    public void createTask(Task task) {
+    public Task createTask(Task task) {
         task.setId(getId());
         tasks.put(task.getId(), task);
+        return task;
     }
 
     @Override
-    public void createEpic(Epic epic) {
+    public Epic createEpic(Epic epic) {
         epic.setId(getId());
         epics.put(epic.getId(), epic);
+        return epic;
     }
 
     @Override
@@ -83,30 +82,33 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public Task updateTask(Task task) {
         if (!tasks.containsKey(task.getId())) {
-            return;
+            return null;
         }
         tasks.put(task.getId(), task);
+        return task;
     }
 
     @Override
-    public void updateEpic(Epic epic) {
+    public Epic updateEpic(Epic epic) {
         if (!epics.containsKey(epic.getId())) {
-            return;
+            return null;
         }
         epics.put(epic.getId(), epic);
+        return epic;
     }
 
     @Override
-    public void updateSubtasks(Subtask subtask) {
+    public Subtask updateSubtasks(Subtask subtask) {
         if (!subtasks.containsKey(subtask.getId()) ||
                 !epics.containsKey(subtask.getEpicId()) ||
                 !epics.get(subtask.getEpicId()).getSubtasks().contains(subtask.getId())) {
-            return;
+            return null;
         }
         subtasks.put(subtask.getId(), subtask);
         updateEpicStatus(epics.get(subtasks.get(subtask.getId()).getEpicId()));
+        return subtask;
     }
 
     @Override

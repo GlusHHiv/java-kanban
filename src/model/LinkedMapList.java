@@ -6,12 +6,12 @@ import java.util.LinkedList;
 
 public class LinkedMapList<T> extends LinkedList {
 
-    class Node<E> {
+    private class Node<E> {
         public E data;
         public Node<E> next;
         public Node<E> prev;
 
-        public Node(Node<E> next, Node<E> prev, E data) {
+        public Node(Node<E> next,E data, Node<E> prev) {
             this.next = next;
             this.prev = prev;
             this.data = data;
@@ -20,13 +20,13 @@ public class LinkedMapList<T> extends LinkedList {
 
     private Node<T> head;
     private Node<T> tail;
-    private HashMap<Integer, Node<T>> innternalHashMap = new HashMap<>();
+    private HashMap<Integer, Node<T>> internalHashMap = new HashMap<>();
     private int size = 0;
 
     public void linkLast(T data, int id) {
         final Node<T> last = tail;
-        final Node<T> newNode = new Node<>(null, last, data);
-        innternalHashMap.put(id, newNode);
+        final Node<T> newNode = new Node<>(null, data, last);
+        internalHashMap.put(id, newNode);
         tail = newNode;
         if (last == null) {
             head = newNode;
@@ -38,15 +38,15 @@ public class LinkedMapList<T> extends LinkedList {
 
     @Override
     public T get(int id) {
-        return innternalHashMap.get(id).data;
+        return internalHashMap.get(id).data;
     }
 
     public boolean removeElement(int id) {
-        if (!innternalHashMap.containsKey(id)) {
+        if (!internalHashMap.containsKey(id)) {
             return false;
         }
 
-        unlink(innternalHashMap.get(id));
+        unlink(internalHashMap.get(id));
         return true;
 
     }
@@ -86,13 +86,13 @@ public class LinkedMapList<T> extends LinkedList {
     }
 
     public boolean contains(int id) {
-        return innternalHashMap.containsKey(id);
+        return internalHashMap.containsKey(id);
     }
 
     @Override
     public String toString() {
         String returnmentString = "";
-        for (Node<T> nodeData : innternalHashMap.values()) {
+        for (Node<T> nodeData : internalHashMap.values()) {
             returnmentString += ("{" + nodeData.data.toString()) + "\n";
         }
         return returnmentString + "}";
