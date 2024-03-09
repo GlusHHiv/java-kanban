@@ -6,25 +6,30 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 class InMemoryTaskManagerTest {
     private final static InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
+    static Epic epic;
 
 
-    @BeforeAll
-    public static void beforeAll() {
-        final Epic epic = new Epic("первый  эпик", "описание одинепик", 0, Status.NEW);
-        taskManager.createEpic(epic);
-        Subtask subtask = new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 0, 0);
-        Subtask subtask1 = new Subtask("второй саб_епик2", "описание двасаб", Status.NEW, 0, 0);
-        taskManager.createSubTask(subtask);
-        taskManager.createSubTask(subtask1);
+
+    @BeforeEach
+    public void beforeEachl() {
+        epic = new Epic("первый  эпик", "описание одинепик", 0, Status.NEW);
+        taskManager.createEpic(new Epic("первый  эпик", "описание одинепик", null, Status.NEW));
+        taskManager.createSubTask(new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0));
+        taskManager.createSubTask(new Subtask("второй саб_епик2", "описание двасаб", Status.NEW, 2, 0));
         taskManager.createTask(new Task("первая задача", "описание один", 0, Status.NEW));
-        Epic epic1 = new Epic("второй эпик", "описание дыаэпик", 0, Status.NEW);
-        taskManager.createEpic(epic1);
+        taskManager.createEpic(new Epic("второй эпик", "описание дыаэпик", 0, Status.NEW));
+    }
+
+    @AfterEach
+    public void afterEach() {
+        taskManager.deleteAllTasks();
+        taskManager.deleteAllEpics();
+        taskManager.deleteAllSubtasks();
+        taskManager.resetId();
     }
 
     @Test
@@ -36,8 +41,7 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void updateSubtasks_updateSubtaskStatusToInProgress() {
-        taskManager.updateSubtasks(new Subtask("первый изм саб_епик1",
-                "описание одинсаб",
+        taskManager.updateSubtasks(new Subtask("первый  саб", "описание одинсаб",
                 Status.IN_PROGRESS,
                 1,
                 0));
@@ -48,8 +52,9 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void deleteSubtaskById_deleteOneSubtask() {
+        int initialSubSize = taskManager.getSubtasks().size();
         taskManager.deleteSubtaskById(1);
-        Assertions.assertEquals(1,
+        Assertions.assertEquals(initialSubSize - 1,
                 taskManager.getSubtasks().size(),
                 "Сабтаск в списке менеджера не был удален.");
         Assertions.assertEquals(1,

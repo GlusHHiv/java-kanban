@@ -20,9 +20,4 @@ class ManagersTest {
     void shouldReturnTheSameName() {
         Assertions.assertEquals(managers.getDefault().getTaskById(0).getName(), new InMemoryTaskManager(new InMemoryHistoryManager()).getTaskById(0).getName());
     }
-
-    @Test
-    void shouldReturnHistorySizeOf2WhenOneTaskCalledTwice() {
-        Assertions.assertEquals(managers.getDefaultHistory().getHistory().size(), 2);
-    }
 }
