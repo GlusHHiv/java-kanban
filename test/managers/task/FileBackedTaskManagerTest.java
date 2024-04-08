@@ -13,6 +13,7 @@ import java.io.IOException;
 public class FileBackedTaskManagerTest {
         private static FileBackedTaskManager manager;
         private static File file;
+
         @BeforeAll
         public static void beforeAll() throws IOException {
                 file = File.createTempFile("test", ".txt");

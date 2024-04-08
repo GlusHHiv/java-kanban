@@ -1,6 +1,4 @@
-package personalExceptions;
-
-import java.io.IOException;
+package exceptions;
 
 public class ManagerSaveException extends Exception {
     public ManagerSaveException(final String message) {
