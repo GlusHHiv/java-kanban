@@ -6,7 +6,6 @@ import personalExceptions.ManagerSaveException;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -24,6 +23,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         if (file.equals(null)) {
             return;
         }
+
         try {
             try (Writer writer = new FileWriter(file, Charset.defaultCharset())) {
                 writer.write("id,type,name,status,description,epic\n");
@@ -191,21 +191,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         save();
     }
 
-    private String readFile() {
-        try (BufferedReader buffer = new BufferedReader(new FileReader(Files.readString(file.toPath()),
+    public String readFile() {
+        String fullLine = "";
+        try (BufferedReader buffer = new BufferedReader(new FileReader(file,
                 Charset.defaultCharset()))) {
             String line;
-            ArrayList<String[]> strList;
-            String fullLine = null;
             while (buffer.ready()) {
                 line = buffer.readLine();
                 fullLine = String.join("\n", fullLine, line);
             }
-            return fullLine.substring(fullLine.indexOf("id"));
         } catch (IOException e) {
             System.out.println("Ошибка чтения");
         }
-        return "-1";
+
+        return fullLine.trim();
     }
 
     private ArrayList<Integer> getAllIds() {

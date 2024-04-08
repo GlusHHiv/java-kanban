@@ -15,7 +15,7 @@ class InMemoryTaskManagerTest {
 
 
     @BeforeEach
-    public void beforeEachl() {
+    public void beforeEach() {
         epic = new Epic("первый  эпик", "описание одинепик", 0, Status.NEW);
         taskManager.createEpic(new Epic("первый  эпик", "описание одинепик", null, Status.NEW));
         taskManager.createSubTask(new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0));
