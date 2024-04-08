@@ -15,6 +15,5 @@ import java.nio.file.Paths;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        FileBackedTaskManager manager = new FileBackedTaskManager( new File("C:\\Users\\polia\\dev\\Educational\\Java-test.txt"), new InMemoryHistoryManager());
     }
 }
