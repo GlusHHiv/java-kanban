@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
-
     private static File file;
-    
+
     public FileBackedTaskManager(File file, HistoryManager historyManager) {
         super(historyManager);
         this.file = file;
