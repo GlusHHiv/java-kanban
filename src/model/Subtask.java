@@ -12,10 +12,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "\nName: " + getName() +
-                ", id: " + getId() +
-                ", description: " + "'" + getDescription() +
-                "', status: " + getStatus();
+        return TaskTypes.SUBTASK +  "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpicId() + "\n";
     }
 
 
