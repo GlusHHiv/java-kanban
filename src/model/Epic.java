@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private final static TaskTypes type = TaskTypes.EPIC;
+    private final  TaskTypes type = TaskTypes.EPIC;
 
     private ArrayList<Integer> subtasks = new ArrayList<>();
 

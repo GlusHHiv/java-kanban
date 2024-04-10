@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Subtask extends Task {
     private  Integer epicId;
-    private final static TaskTypes type = TaskTypes.SUBTASK;
+    private final  TaskTypes type = TaskTypes.SUBTASK;
 
 
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
