@@ -186,7 +186,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private Task convertStringToTaskAndLoad(String line) {
-        if(line.equals("id,type,name,status,description,epic")) {
+        if (line.equals("id,type,name,status,description,epic")) {
             return null;
         } else if (line.isEmpty() || line.isBlank()) {
             return null;
