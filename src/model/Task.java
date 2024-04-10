@@ -8,6 +8,8 @@ public class Task {
     private Integer id;
     private Status status;
 
+    private final static TaskTypes type = TaskTypes.TASK;
+
     public Task(String name, String description, Integer id, Status status) {
         this.name = name;
         this.description = description;
@@ -17,7 +19,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return TaskTypes.TASK + "," + name + "," + status + "," + description + "\n";
+        return "\nName='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status='" + status + '\'';
     }
 
     public String getName() {
@@ -62,6 +67,10 @@ public class Task {
                 Objects.equals(description, otherTask.description) &&
                 Objects.equals(id, otherTask.id) &&
                 Objects.equals(status, otherTask.status);
+    }
+
+    public TaskTypes getType() {
+        return type;
     }
 }
 

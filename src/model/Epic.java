@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private final static TaskTypes type = TaskTypes.EPIC;
+
     private ArrayList<Integer> subtasks = new ArrayList<>();
 
     public Epic(String name, String description, Integer id, Status status) {
@@ -24,7 +26,11 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return TaskTypes.EPIC +  "," + getName() + "," + getStatus() + "," + getDescription() + "\n";
+        return "\nName: " + getName() +
+                ", id: " + getId() +
+                ", description: " + "'" + getDescription() +
+                "', status: " + getStatus() +
+                ", Subtasks: " + subtasks.toString();
 
     }
 

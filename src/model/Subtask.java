@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Subtask extends Task {
     private  Integer epicId;
+    private final static TaskTypes type = TaskTypes.SUBTASK;
+
 
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
         super(name, description, id, status);
@@ -12,7 +14,10 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return TaskTypes.SUBTASK +  "," + getName() + "," + getStatus() + "," + getDescription() + "," + getEpicId() + "\n";
+        return "\nName: " + getName() +
+                ", id: " + getId() +
+                ", description: " + "'" + getDescription() +
+                "', status: " + getStatus();
     }
 
 
