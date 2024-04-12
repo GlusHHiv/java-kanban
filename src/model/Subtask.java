@@ -3,8 +3,7 @@ package model;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private  Integer epicId;
-    private final  TaskTypes type = TaskTypes.SUBTASK;
+    private final TaskType type = TaskType.SUBTASK;
 
 
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {

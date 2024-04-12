@@ -113,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public  ArrayList<Subtask> getEpicSubtasks(int epicId) {
+    public ArrayList<Subtask> getEpicSubtasks(int epicId) {
         ArrayList<Subtask> subtasksInEpic = new ArrayList<>();
 
         for (int id : epics.get(epicId).getSubtasks()) {
@@ -156,7 +156,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-    protected  void updateEpicStatus(Epic epic) {
+    protected void updateEpicStatus(Epic epic) {
         int doneCount = 0;
         int inProgressCount = 0;
 

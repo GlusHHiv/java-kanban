@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private final  TaskTypes type = TaskTypes.EPIC;
+    private final TaskType type = TaskType.EPIC;
 
-    private ArrayList<Integer> subtasks = new ArrayList<>();
 
     public Epic(String name, String description, Integer id, Status status) {
         super(name, description, id, status);
@@ -34,7 +33,7 @@ public class Epic extends Task {
 
     }
 
-    public ArrayList<Integer> getSubtasks() {
+    public  ArrayList<Integer> getSubtasks() {
         return subtasks;
     }
 

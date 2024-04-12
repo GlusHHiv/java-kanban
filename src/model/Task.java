@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Task {
@@ -8,7 +9,10 @@ public class Task {
     private Integer id;
     private Status status;
 
-    private final  TaskTypes type = TaskTypes.TASK;
+    protected Integer epicId;
+    protected ArrayList<Integer> subtasks = new ArrayList<>();
+
+    private final TaskType type = TaskType.TASK;
 
     public Task(String name, String description, Integer id, Status status) {
         this.name = name;
@@ -69,7 +73,7 @@ public class Task {
                 Objects.equals(status, otherTask.status);
     }
 
-    public TaskTypes getType() {
+    public TaskType getType() {
         return type;
     }
 }

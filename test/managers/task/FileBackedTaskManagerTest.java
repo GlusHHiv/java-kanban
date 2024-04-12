@@ -17,7 +17,7 @@ public class FileBackedTaskManagerTest {
         @BeforeAll
         public static void beforeAll() throws IOException {
                 file = File.createTempFile("test", ".txt");
-                manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
+                manager = FileBackedTaskManager.loadFromFile(file);
         }
 
         @Test
