@@ -89,8 +89,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         isPreviosEmpty = true;
                     }
                     if (Convertor.convertStringToTaskAndLoad(line)
-                            .equals(new Task("dkd" , "das", 999999999, Status.NEW))) {
-
+                            .equals(new Task("dkd", "das", 999999999, Status.NEW))) {
+                            break;
                     } else if (Convertor.convertStringToTaskAndLoad(line).getType().equals(TaskType.SUBTASK)) {
                         Subtask subtask = (Subtask) Convertor.convertStringToTaskAndLoad(line);
                         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
