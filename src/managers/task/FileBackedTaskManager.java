@@ -2,6 +2,7 @@ package managers.task;
 
 import convertors.Convertor;
 import managers.history.HistoryManager;
+import managers.history.InMemoryHistoryManager;
 import model.*;
 import exceptions.ManagerSaveException;
 
@@ -43,7 +44,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
                 }
 
-                writer.write("\n" + Convertor.convertHistory(getHistoryFromTaskManager()));
+                writer.write("\n" + Convertor.convertHistory(historyManager.getHistory()));
             } catch (IOException exception) {
                 throw new ManagerSaveException("Ошибка сохранения");
             }
@@ -75,7 +76,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(File file1)  {
         try {
-            try (BufferedReader buffer = new BufferedReader(new FileReader(file,
+            historyManager = new InMemoryHistoryManager();
+            try (BufferedReader buffer = new BufferedReader(new FileReader(file1,
                     Charset.defaultCharset()))) {
                 String line;
                 boolean isPreviosEmpty = false;
@@ -86,7 +88,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     } else if (line.isEmpty()) {
                         isPreviosEmpty = true;
                     }
-                    if (Convertor.convertStringToTaskAndLoad(line).getType().equals(TaskType.SUBTASK)) {
+                    if (Convertor.convertStringToTaskAndLoad(line)
+                            .equals(new Task("dkd" , "das", 999999999, Status.NEW))) {
+
+                    } else if (Convertor.convertStringToTaskAndLoad(line).getType().equals(TaskType.SUBTASK)) {
                         Subtask subtask = (Subtask) Convertor.convertStringToTaskAndLoad(line);
                         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
                         subtasks.put(subtask.getId(), subtask);

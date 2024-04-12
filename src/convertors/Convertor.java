@@ -54,9 +54,9 @@ public class Convertor {
 
     public static Task convertStringToTaskAndLoad(String line) {
         if (line.equals("id,type,name,status,description,epic")) {
-            return null;
+            return new Task("dkd" , "das", 999999999, Status.NEW);
         } else if (line.isEmpty() || line.isBlank()) {
-            return null;
+            return new Task("dkd" , "das", 999999999, Status.NEW);
         }
         String[] str = line.split(",");
         Integer taskId = Integer.parseInt(str[0]);
