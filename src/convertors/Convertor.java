@@ -50,9 +50,8 @@ public class Convertor {
             Subtask subtask = new Subtask(str[2], str[4], Status.valueOf(str[3]), taskId, epicId);
             return subtask;
         }
-
     }
-    
+
     public static Task convertStringToTaskAndLoad(String line) {
         if (line.equals("id,type,name,status,description,epic")) {
             return null;
@@ -72,6 +71,5 @@ public class Convertor {
             Subtask subtask = new Subtask(str[2], str[4], Status.valueOf(str[3]), taskId, epicId);
             return subtask;
         }
-
     }
 }
