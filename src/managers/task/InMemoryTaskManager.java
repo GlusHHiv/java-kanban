@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    protected static final HashMap<Integer, Task> tasks = new HashMap<>();
-    protected static final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
-    protected static final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
+    protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected static int id = 0;
     protected static HistoryManager historyManager;
 
@@ -221,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int id) {
-        historyManager.add(epics.get(id));
+        historyManager.add((Task) epics.get(id));
         return epics.get(id);
     }
 
@@ -238,7 +238,7 @@ public class InMemoryTaskManager implements TaskManager {
         return tasks.get(id);
     }
 
-    protected static void addSubtaskToEpic(int epicId, int subId) {
+    protected  void addSubtaskToEpic(int epicId, int subId) {
         if (!(subtasks.containsKey(subId))) {
             return;
         }

@@ -10,22 +10,33 @@ public class Task {
     private Status status;
 
     protected Integer epicId;
+    private  TaskType type;
     protected ArrayList<Integer> subtasks = new ArrayList<>();
 
-    private final TaskType type = TaskType.TASK;
-
+    public Task() {
+        name = "null Task";
+    }
     public Task(String name, String description, Integer id, Status status) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
+        this.type = TaskType.TASK;
+    }
+
+    public Task(String name, String description, Integer id, Status status, TaskType type) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+        this.type = type;
     }
 
     @Override
     public String toString() {
         return "\nName='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
+                ", id: " + getId() +
                 ", status='" + status + '\'';
     }
 
@@ -71,6 +82,10 @@ public class Task {
                 Objects.equals(description, otherTask.description) &&
                 Objects.equals(id, otherTask.id) &&
                 Objects.equals(status, otherTask.status);
+    }
+
+    public boolean isNullTask() {
+        return name.equals("null Task");
     }
 
     public TaskType getType() {

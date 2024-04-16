@@ -3,11 +3,10 @@ package model;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private final TaskType type = TaskType.SUBTASK;
 
 
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
-        super(name, description, id, status);
+        super(name, description, id, status, TaskType.SUBTASK);
         this.epicId = epicId;
     }
 
@@ -16,7 +15,9 @@ public class Subtask extends Task {
         return "\nName: " + getName() +
                 ", id: " + getId() +
                 ", description: " + "'" + getDescription() +
-                "', status: " + getStatus();
+                "', status: " + getStatus() +
+                ", epicId: " + epicId +
+                ", type: " + getType();
     }
 
 

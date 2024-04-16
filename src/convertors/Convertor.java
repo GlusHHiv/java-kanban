@@ -2,10 +2,11 @@ package convertors;
 
 import model.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Convertor {
-
 
     public static String convertTaskToString(Task task) {
         return task.getId() + "," + task.getType() + "," + task.getName() + "," + task.getStatus() + "," + task.getDescription() + "\n";
@@ -24,19 +25,39 @@ public class Convertor {
                 task.getEpicId() + "\n";
     }
 
-    public static String convertHistory(List<Task> history) {
-        String line = "";
-        for (Task task : history) {
-            if (task.getType().equals(TaskType.SUBTASK)) {
-                line = String.join(line, convertSubtaskToString((Subtask) task));
-            } else {
-                line = String.join(line, convertTaskToString(task));
+    public static ArrayList<Integer> convertHistoryToIds(List<Task> history, List<Integer> allIds) {
+        ArrayList<Integer> taskIds = new ArrayList<>();
+        for (Integer i : allIds) {
+            if (history.contains(i)) {
+                taskIds.add(i);
             }
+        /*if (history.isEmpty()) {
+            return null;
         }
-        return line;
+        String historyStr  = history.toString();
+        historyStr = historyStr.replace("{", "").replace("}", "");
+        String[] lines = historyStr.split("\n");
+        for (String s: lines) {
+            //System.out.println(s);
+            if (!s.isEmpty() && !s.isBlank()) {
+                s = s.substring(historyStr.indexOf(", id: ") + 5);
+                s = s.substring(0, 1);
+                if (s.isBlank() || s.isEmpty()) {
+                    break;
+                }
+                try {
+                    taskIds.add(Integer.parseInt(s));
+                } catch (NumberFormatException e) {
+
+                }
+            }*/
+            System.out.println(taskIds);
+        }
+
+        return taskIds;
     }
 
-    public static Task convertHistoryFromStringAndAdd(String line) {
+    public static Task convertHistoryFromString(String line) {
         String[] str = line.split(",");
         Integer taskId = Integer.parseInt(str[0]);
         if (str[1].equals("TASK")) {
@@ -52,24 +73,30 @@ public class Convertor {
         }
     }
 
-    public static Task convertStringToTaskAndLoad(String line) {
+    public static HashMap<TaskType, Task> convertStringToTask(String line) {
         if (line.equals("id,type,name,status,description,epic")) {
-            return new Task("dkd", "das", 999999999, Status.NEW);
+            return  null;
         } else if (line.isEmpty() || line.isBlank()) {
-            return new Task("dkd", "das", 999999999, Status.NEW);
+            return null;
         }
         String[] str = line.split(",");
         Integer taskId = Integer.parseInt(str[0]);
         if (str[1].equals("TASK")) {
             Task task = new Task(str[2], str[4], taskId, Status.valueOf(str[3]));
-            return task;
+            HashMap<TaskType, Task> map = new HashMap<>();
+            map.put(TaskType.TASK, task);
+            return map;
         } else if (str[1].equals("EPIC")) {
             Epic epic = new Epic(str[2], str[4], taskId, Status.valueOf(str[3]));
-            return epic;
+            HashMap<TaskType ,Task> map = new HashMap<>();
+            map.put(TaskType.EPIC ,epic);
+            return map;
         } else {
             Integer epicId = Integer.parseInt(str[5]);
             Subtask subtask = new Subtask(str[2], str[4], Status.valueOf(str[3]), taskId, epicId);
-            return subtask;
+            HashMap<TaskType ,Task> map = new HashMap<>();
+            map.put(TaskType.SUBTASK ,subtask);
+            return map;
         }
     }
 }

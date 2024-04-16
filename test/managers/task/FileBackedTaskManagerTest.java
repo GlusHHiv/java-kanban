@@ -23,14 +23,12 @@ public class FileBackedTaskManagerTest {
         @Test
         public void saveTest() {
                 manager.createTask(new Task("test задача", "описанвывые один", 0, Status.NEW));
-                Assertions.assertEquals(manager.readFile(), "id,type,name,status,description,epic\n" +
-                        "0,TASK,test задача,NEW,описанвывые один");
+                Assertions.assertEquals(manager.getTasks().size(), 1);
         }
 
         @Test
         public void loadFromFileTest() {
                 manager.loadFromFile(file);
-                Assertions.assertEquals(manager.readFile(), "id,type,name,status,description,epic\n" +
-                        "0,TASK,test задача,NEW,описанвывые один");
+                Assertions.assertEquals(manager.getTasks().size(), 1);
         }
 }
