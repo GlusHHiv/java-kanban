@@ -16,6 +16,7 @@ public class Task {
     public Task() {
         name = "null Task";
     }
+
     public Task(String name, String description, Integer id, Status status) {
         this.name = name;
         this.description = description;
