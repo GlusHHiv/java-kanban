@@ -80,17 +80,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 for (Integer i : ids) { // запись в файл задач по id по порядку возрастания
                     if (subtasks.containsKey(i)) {
-                        if (historyManager.getHistory().contains(subtasks.get(i))){
+                        if (historyManager.getHistory().contains(subtasks.get(i))) {
                             historyIds.add(i);
                         }
                         writer.write(Convertor.convertSubtaskToString(subtasks.get(i)));
                     } else if (epics.containsKey(i)) {
-                        if (historyManager.getHistory().contains(i)){
+                        if (historyManager.getHistory().contains(i)) {
                             historyIds.add(i);
                         }
                         writer.write(Convertor.convertEpicToString(epics.get(i)));
                     } else if (tasks.containsKey(i)) {
-                        if (historyManager.getHistory().contains(tasks.get(i))){
+                        if (historyManager.getHistory().contains(tasks.get(i))) {
                             historyIds.add(i);
                         }
                         writer.write(Convertor.convertTaskToString(tasks.get(i)));
