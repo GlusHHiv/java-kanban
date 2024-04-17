@@ -19,14 +19,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private FileBackedTaskManager(File file, HistoryManager historyManager) {
         super(historyManager);
         this.file = file;
-        dataFilling();
+        fillData();
     }
 
-    private void dataFilling() {
-        try {
-            historyManager = new InMemoryHistoryManager();
-            try (BufferedReader buffer = new BufferedReader(new FileReader(file,
-                    Charset.defaultCharset()))) {
+    private void fillData() {
+        historyManager = new InMemoryHistoryManager();
+        try (BufferedReader buffer = new BufferedReader(new FileReader(file,
+                Charset.defaultCharset()))) {
                 String line = buffer.readLine();
                 boolean isPreviosEmpty = false;
                 while (buffer.ready()) {
@@ -35,7 +34,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         break;
                     }
                     if (isPreviosEmpty) {
-                        historyManager.add(Convertor.convertHistoryFromString(line));
+                        historyIds = Convertor.convertHistoryFromString(line);
+                        for (Integer i: historyIds) {
+                            if (subtasks.containsKey(i)) {
+                                historyManager.add(subtasks.get(i));
+                            } else if (epics.containsKey(i)) {
+                                historyManager.add(epics.get(i));
+                            } else if (tasks.containsKey(i)) {
+                                historyManager.add(tasks.get(i));
+                            }
+                        }
+
                     } else if (line.isEmpty()) {
                         isPreviosEmpty = true;
                     }
@@ -55,13 +64,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (!getAllIds().isEmpty()) {
                     id = getAllIds().get(getAllIds().size() - 1) + 1;
                 }
-                save();
             } catch (IOException e) {
                 throw new ManagerSaveException("Ошибка чтения");
             }
-        } catch (ManagerSaveException managerSaveException) {
-            managerSaveException.getMessage();
-        }
+
+
     }
 
 
@@ -97,17 +104,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
                 }
                 if (!historyIds.isEmpty()) {
-                    System.out.println(historyIds);
                     writer.write("\n");
-                    for (Integer i : historyIds) {
-                        if (subtasks.containsKey(i)) {
-                            writer.write(Convertor.convertSubtaskToString(subtasks.get(i)));
-                        } else if (epics.containsKey(i)) {
-                            writer.write(Convertor.convertEpicToString(epics.get(i)));
-                        } else if (tasks.containsKey(i)) {
-                            writer.write(Convertor.convertTaskToString(tasks.get(i)));
-                        }
-                    }
+                    writer.write(historyIds.toString());
                 }
             } catch (IOException exception) {
                 throw new ManagerSaveException("Ошибка сохранения");//по усл ТЗ нужно отлавливать и выбрасываать

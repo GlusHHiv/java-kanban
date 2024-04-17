@@ -2,6 +2,7 @@ package convertors;
 
 import model.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Convertor {
@@ -24,20 +25,17 @@ public class Convertor {
     }
 
 
-    public static Task convertHistoryFromString(String line) {
+    public static ArrayList<Integer> convertHistoryFromString(String line) {
+        line = line
+                .replace("]", "")
+                .replace("[", "")
+                .replace(" ", "");
         String[] str = line.split(",");
-        Integer taskId = Integer.parseInt(str[0]);
-        if (str[1].equals("TASK")) {
-            Task task = new Task(str[2], str[4], taskId, Status.valueOf(str[3]));
-            return task;
-        } else if (str[1].equals("EPIC")) {
-            Epic epic = new Epic(str[2], str[4], taskId, Status.valueOf(str[3]));
-            return epic;
-        } else {
-            Integer epicId = Integer.parseInt(str[5]);
-            Subtask subtask = new Subtask(str[2], str[4], Status.valueOf(str[3]), taskId, epicId);
-            return subtask;
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < str.length; i++) {
+            ids.add(Integer.parseInt(str[i]));
         }
+        return ids;
     }
 
     public static HashMap<TaskType, Task> convertStringToTask(String line) {
