@@ -19,7 +19,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private FileBackedTaskManager(File file, HistoryManager historyManager) {
         super(historyManager);
         this.file = file;
-        fillData();
+            fillData();
     }
 
     private void fillData() {
@@ -51,13 +51,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     if (Convertor.convertStringToTask(line).containsKey(TaskType.SUBTASK)) {
                         Subtask subtask = (Subtask) Convertor.convertStringToTask(line).get(TaskType.SUBTASK);
                         subtasks.put(subtask.getId(), subtask);
+                        addToTreeSet(subtask);
                         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
                     } else if (Convertor.convertStringToTask(line).containsKey(TaskType.EPIC)) {
                         Epic epic = (Epic) Convertor.convertStringToTask(line).get(TaskType.EPIC);
                         epics.put(epic.getId(), epic);
+                        addToTreeSet(epic);
                     } else if (Convertor.convertStringToTask(line).containsKey(TaskType.TASK)) {
                         Task task = Convertor.convertStringToTask(line).get(TaskType.TASK);
                         tasks.put(task.getId(), task);
+                        addToTreeSet(task);
                     }
 
                 }
@@ -79,7 +82,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         try {
             try (Writer writer = new FileWriter(file, Charset.defaultCharset())) {
-                writer.write("id,type,name,status,description,epic\n");
+                writer.write("id,type,name,status,description,duration,startTime,epic\n");
                 ArrayList<Integer> ids = getAllIds(); //
                 if (ids.isEmpty()) {
                     System.out.println("Мапы пусты");

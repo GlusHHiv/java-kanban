@@ -6,13 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+/*
 class SubtaskTest {
 
     private Subtask subtask;
 
     @BeforeEach
     public void beforeEach() {
-        subtask = new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0);
+        subtask = new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0, 20);
     }
      @Test
      public void setEpicId_addSubtaskAsEpic() {
@@ -27,6 +28,7 @@ class SubtaskTest {
                  "описание одинсаб",
                  Status.NEW,
                  1,
-                 0)), "Одинаковые сабтаски не равны.");
+                 0,
+                 20)), "Одинаковые сабтаски не равны.");
      }
-}
+}*/

@@ -8,11 +8,14 @@ import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 import java.util.List;
+
 
 class InMemoryHistoryManagerTest {
     private InMemoryHistoryManager historyManager;
-    private final Task task = new Task("Test addNewTask", "Test addNewTask description", 0, Status.NEW);
+    private final Task task = new Task("Test addNewTask", "Test addNewTask description", 0, Status.NEW, 30, LocalDateTime.now());
 
     @BeforeEach
     public  void beforeEach() {
@@ -33,10 +36,9 @@ class InMemoryHistoryManagerTest {
     public void add_addTwoSameTasksToHistory() {
         int innitialHistorySize = historyManager.getHistory().size();
         historyManager.add(task);
-        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW));
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 1, LocalDateTime.now().plusHours(2)));
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
-        System.out.println(history.get(0));
         Assertions.assertEquals(history.size(), innitialHistorySize + 2);
     }
 
@@ -51,9 +53,35 @@ class InMemoryHistoryManagerTest {
     public void getHistory() {
         int innitialHistorySize = historyManager.getHistory().size();
         historyManager.add(task);
-        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW));
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 13, LocalDateTime.now().plusHours(2)));
         final List<Task> history = historyManager.getHistory();
-        System.out.println(history);
         Assertions.assertEquals(innitialHistorySize + 2, historyManager.getHistory().size());
     }
+
+    @Test
+    public void removeTest() {
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 13, LocalDateTime.now().plusHours(2)));
+        Assertions.assertTrue(historyManager.remove(1));
+    }
+
+    @Test
+    public void removeLastElementTest() {
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 13, LocalDateTime.now().plusHours(2)));
+        historyManager.add(new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
+        historyManager.add(new Task("Test 3 addNewTask", "Test 2 addNewTask description", 3, Status.NEW, 13, LocalDateTime.now().plusHours(6)));
+        int innitialHistorySize = historyManager.getHistory().size();
+        historyManager.remove(3);
+        Assertions.assertEquals(historyManager.getHistory().size(), innitialHistorySize - 1);
+    }
+
+    @Test
+    public void removeMiddleElementTest() {
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 13, LocalDateTime.now().plusHours(2)));
+        historyManager.add(new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
+        historyManager.add(new Task("Test 3 addNewTask", "Test 2 addNewTask description", 3, Status.NEW, 13, LocalDateTime.now().plusHours(6)));
+        int innitialHistorySize = historyManager.getHistory().size();
+        historyManager.remove(2);
+        Assertions.assertEquals(historyManager.getHistory().size(), innitialHistorySize - 1);
+    }
 }
+

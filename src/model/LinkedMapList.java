@@ -3,6 +3,7 @@ package model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class LinkedMapList<T> extends LinkedList {
 

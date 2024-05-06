@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
+
 public class FileBackedTaskManagerTest {
         private static FileBackedTaskManager manager;
         private static File file;
@@ -22,7 +23,7 @@ public class FileBackedTaskManagerTest {
 
         @Test
         public void saveTest() {
-                manager.createTask(new Task("test задача", "описанвывые один", 0, Status.NEW));
+                manager.createTask(new Task("test задача", "описанвывые один", 0, Status.NEW, 30));
                 Assertions.assertEquals(manager.getTasks().size(), 1);
         }
 
@@ -32,3 +33,4 @@ public class FileBackedTaskManagerTest {
                 Assertions.assertEquals(manager.getTasks().size(), 1);
         }
 }
+

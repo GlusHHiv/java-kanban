@@ -24,11 +24,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public void remove(int id) {
+    public boolean remove(int id) {
         if (!history.contains(id)) {
-            return;
+            return false;
         }
         history.removeElement(id);
+        return true;
     }
 
 
