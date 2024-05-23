@@ -45,6 +45,4 @@ public class Subtask extends Task {
                 Objects.equals(getStatus(), otherSubtask.getStatus()) &&
                 Objects.deepEquals(getEpicId(), otherSubtask.getEpicId());
     }
-
-    
 }

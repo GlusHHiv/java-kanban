@@ -59,7 +59,4 @@ public class Epic extends Task {
                 Objects.equals(getDescription(), otherEpic.getDescription()) &&
                 Objects.equals(getStatus(), otherEpic.getStatus());
     }
-
-
-
 }
