@@ -19,8 +19,8 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    private final static DateTimeFormatter NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-    protected final static DateTimeFormatter TO_STRING_FORMAT = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
+    private final  DateTimeFormatter NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    protected final  DateTimeFormatter TO_STRING_FORMAT = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
 
     public Task() {
         name = "null Task";
