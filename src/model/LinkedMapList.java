@@ -67,16 +67,6 @@ public class LinkedMapList<T> extends LinkedList {
     public T getLast() {
         return internalHashMap.get(tail.getId()).data;
     }
-    
-    public boolean removeElement(int id) {
-        if (!internalHashMap.containsKey(id)) {
-            return false;
-        }
-
-        unlink(internalHashMap.get(id), id);
-        return true;
-
-    }
 
     private T unlink(Node<T> o, int id) {
         final T element = o.data;
@@ -148,6 +138,16 @@ public class LinkedMapList<T> extends LinkedList {
         }
         size--;
         return data;
+    }
+
+    public boolean removeElement(int id) {
+        if (!internalHashMap.containsKey(id)) {
+            return false;
+        }
+
+        unlink(internalHashMap.get(id), id);
+        return true;
+
     }
 
     @Override
