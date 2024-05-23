@@ -57,9 +57,7 @@ public class Epic extends Task {
         Epic otherEpic = (Epic) obj;
         return Objects.equals(getName(), otherEpic.getName()) &&
                 Objects.equals(getDescription(), otherEpic.getDescription()) &&
-                Objects.equals(getId(), otherEpic.getId()) &&
-                Objects.equals(getStatus(), otherEpic.getStatus()) &&
-                Objects.deepEquals(getSubtasks(), otherEpic.getSubtasks());
+                Objects.equals(getStatus(), otherEpic.getStatus());
     }
 
 

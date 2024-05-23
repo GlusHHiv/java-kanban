@@ -3,7 +3,6 @@ package model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 public class LinkedMapList<T> extends LinkedList {
 
@@ -11,11 +10,17 @@ public class LinkedMapList<T> extends LinkedList {
         public E data;
         public Node<E> next;
         public Node<E> prev;
+        public int id;
 
-        public Node(Node<E> next,E data, Node<E> prev) {
+        public Node(Node<E> next,E data, Node<E> prev, int id) {
             this.next = next;
             this.prev = prev;
             this.data = data;
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 
@@ -26,7 +31,7 @@ public class LinkedMapList<T> extends LinkedList {
 
     public void linkLast(T data, int id) {
         final Node<T> last = tail;
-        final Node<T> newNode = new Node<>(null, data, last);
+        final Node<T> newNode = new Node<>(null, data, last, id);
         internalHashMap.put(id, newNode);
         tail = newNode;
         if (last == null) {
@@ -37,22 +42,42 @@ public class LinkedMapList<T> extends LinkedList {
         size++;
     }
 
+    public void linkFirst(T data, int id) {
+        final Node<T> first = head;
+        final Node<T> newNode = new Node<>(first, data, null, id);
+        internalHashMap.put(id, newNode);
+        head = newNode;
+        if (first == null) {
+            tail = newNode;
+        } else {
+            first.prev = newNode;
+        }
+        size++;
+    }
+
     @Override
     public T get(int id) {
         return internalHashMap.get(id).data;
     }
 
+    public T getFirst() {
+        return internalHashMap.get(head.getId()).data;
+    }
+
+    public T getLast() {
+        return internalHashMap.get(tail.getId()).data;
+    }
     public boolean removeElement(int id) {
         if (!internalHashMap.containsKey(id)) {
             return false;
         }
 
-        unlink(internalHashMap.get(id));
+        unlink(internalHashMap.get(id), id);
         return true;
 
     }
 
-    private T unlink(Node<T> o) {
+    private T unlink(Node<T> o, int id) {
         final T element = o.data;
         final Node<T> next = o.next;
         final Node<T> prev = o.prev;
@@ -76,6 +101,54 @@ public class LinkedMapList<T> extends LinkedList {
         return element;
     }
 
+    public boolean removeFirstElement() {
+        if (head == null) {
+            return false;
+        }
+        internalHashMap.remove(head.getId());
+        unlinkFirst(head);
+        return true;
+    }
+
+    public boolean removeLastElement() {
+        if (tail == null) {
+            return false;
+        }
+        internalHashMap.remove(tail.getId());
+        unlinkLast(tail);
+        return true;
+    }
+
+    private T unlinkFirst(Node<T> o) {
+        final T data = o.data;
+        final Node<T> next = o.next;
+        o.next = null;
+        o.data = null;
+        head = next;
+        if (next == null) {
+            tail = null;
+        } else {
+            next.prev = null;
+        }
+        size--;
+        return data;
+    }
+
+    private T unlinkLast(Node<T> o) {
+        final T data = o.data;
+        final Node<T> last = o.prev;
+        o.prev = null;
+        o.data = null;
+        tail = last;
+        if (last == null) {
+            head = null;
+        } else {
+            last.next = null;
+        }
+        size--;
+        return data;
+    }
+
     @Override
     public int size() {
         return size;
@@ -93,10 +166,13 @@ public class LinkedMapList<T> extends LinkedList {
     @Override
     public String toString() {
         String returnmentString = "";
-        for (Node<T> nodeData : internalHashMap.values()) {
-            returnmentString += ("{" + nodeData.data.toString()) + "\n";
+        Node<T> current = head;
+        while (current != null) {
+            returnmentString += ("{" + current.data.toString()) + "\n";
+            current = current.next;
         }
         return returnmentString + "}";
     }
+
 
 }

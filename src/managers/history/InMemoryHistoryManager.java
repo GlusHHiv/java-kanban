@@ -11,7 +11,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-
         return history;
     }
 
@@ -33,5 +32,39 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
 
+    @Override
+    public void addFirst(Task task) {
+        if ((!history.isEmpty()) && (history.contains(task.getId()))) {
+            history.removeElement(task.getId());
+        }
+        history.linkFirst(task, task.getId());
+    }
+
+    @Override
+    public boolean removeFirst() {
+        if (history.isEmpty()) {
+            return false;
+        }
+        return history.removeFirstElement();
+    }
+
+    @Override
+    public boolean removeLast() {
+        if (history.isEmpty()) {
+            return false;
+        }
+        return history.removeLastElement();
+    }
+
+    @Override
+    public Task getFisrt() {
+        return history.getFirst();
+    }
+
+    @Override
+    public Task getLast() {
+        return history.getLast();
+    }
 }
+
 

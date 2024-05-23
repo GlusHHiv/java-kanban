@@ -98,7 +98,6 @@ public class Task {
         Task otherTask = (Task) obj;
         return Objects.equals(name, otherTask.name) &&
                 Objects.equals(description, otherTask.description) &&
-                Objects.equals(id, otherTask.id) &&
                 Objects.equals(status, otherTask.status);
     }
 

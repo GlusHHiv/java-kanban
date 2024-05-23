@@ -85,7 +85,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 writer.write("id,type,name,status,description,duration,startTime,epic\n");
                 ArrayList<Integer> ids = getAllIds(); //
                 if (ids.isEmpty()) {
-                    System.out.println("Мапы пусты");
                     return;
                 }
                 for (Integer i : ids) { // запись в файл задач по id по порядку возрастания
@@ -178,7 +177,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Subtask updateSubtasks(Subtask subtask) {
-        super.updateTask(subtask);
+        super.updateSubtasks(subtask);
         save();
         return subtask;
     }

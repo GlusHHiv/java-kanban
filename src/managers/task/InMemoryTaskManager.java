@@ -3,7 +3,6 @@ package managers.task;
 import managers.history.HistoryManager;
 import model.*;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,7 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    protected static int id = 0;
+    protected  int id = 0;
     protected static HistoryManager historyManager;
     protected TreeSet<Task> taskTreeSet = new TreeSet<>((Task task1, Task task2) -> task1.getStartTime().compareTo(task2.getStartTime()));
 
@@ -24,6 +23,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask createSubTask(Subtask subtask) {
         subtask.setId(getId());
+        for (Task subtask1 : subtasks.values()) {
+            if (subtask1.equals(subtask)) {
+                return null;
+            }
+        }
         if (!isEpicExist(subtask.getEpicId()) || isIntersection(subtask)) { // Проверка на наличие эпика с id: epicId
             return null;
         }
@@ -39,6 +43,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
+        for (Task task1 : tasks.values()) {
+            if (task1.equals(task)) {
+                return null;
+            }
+        }
         if (isIntersection(task)) {
             return null;
         }
@@ -50,8 +59,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic createEpic(Epic epic) {
+        for (Epic epic1 : epics.values()) {
+            if (epic1.equals(epic)) {
+                return null;
+            }
+        }
         epic.setId(getId());
         epics.put(epic.getId(), epic);
+        addToTreeSet(epic);
         return epic;
     }
 
@@ -60,8 +75,8 @@ public class InMemoryTaskManager implements TaskManager {
         for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
         }
+        deleteFromTreeSetByTaskType(TaskType.TASK);
         tasks.clear();
-        taskTreeSet.stream().filter(task -> !TaskType.TASK.equals(task.getType())).collect(Collectors.toList());
     }
 
     @Override
@@ -69,13 +84,11 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
         }
-        taskTreeSet.stream().filter(task -> !((TaskType.EPIC.equals(task.getType())) || (TaskType.SUBTASK.equals(task.getType())))).collect(Collectors.toList());
-
-        for (Subtask sub : subtasks.values()) {
-            historyManager.remove(sub.getId());
-        }
+        deleteFromTreeSetByTaskType(TaskType.EPIC);
+        deleteAllSubtasks();
         epics.clear();
         subtasks.clear();
+
     }
 
     @Override
@@ -83,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask sub : subtasks.values()) {
             historyManager.remove(sub.getId());
         }
-        taskTreeSet.stream().filter(task -> !TaskType.SUBTASK.equals(task.getType())).collect(Collectors.toList());
+        deleteFromTreeSetByTaskType(TaskType.SUBTASK);
         subtasks.clear();
 
         for (Epic epic : epics.values()) {
@@ -149,6 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.get(epicId).getSubtasks().stream()
                         .peek(id -> subtasks.remove(id))
                         .collect(Collectors.toList());
+        taskTreeSet.stream().filter(task -> !((TaskType.EPIC.equals(task.getType())) || (TaskType.SUBTASK.equals(task.getType())))).collect(Collectors.toList());
         epics.remove(epicId);
         historyManager.remove(epicId);
     }
@@ -159,6 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         tasks.remove(taskId);
+        taskTreeSet.stream().filter(task -> !TaskType.TASK.equals(task.getType())).collect(Collectors.toList());
         historyManager.remove(taskId);
     }
 
@@ -170,6 +185,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.get(subtasks.get(subId).getEpicId()).getSubtasks().remove(subId);
         updateEpicStatus(epics.get(subtasks.get(subId).getEpicId()));
         subtasks.remove(subId);
+        taskTreeSet.stream().filter(task -> !TaskType.SUBTASK.equals(task.getType())).collect(Collectors.toList());
         historyManager.remove(subId);
 
     }
@@ -199,7 +215,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setStatus(Status.DONE);
             return;
         }
-        if (inProgressCount > 0) {
+        if (inProgressCount > 0 || doneCount > 0) {
             epic.setStatus(Status.IN_PROGRESS);
             return;
         }
@@ -320,4 +336,28 @@ public class InMemoryTaskManager implements TaskManager {
             taskTreeSet.add(task);
         }
     }
+
+    @Override
+    public Integer findTaskIdByName(String name) {
+        ArrayList<Integer> taskId = new ArrayList<>();
+        //System.out.println("\n Эпики : ******* \n" + epics + "\nконэц \n");
+        //System.out.println( "********* \n" + taskTreeSet + " \n ******** \n");
+        taskTreeSet.stream().peek(task -> {
+            if (task.getName().equals(name)) {
+                taskId.add(task.getId());
+            }
+        }).collect(Collectors.toList());
+        if (taskId.isEmpty()) {
+            return null;
+        }
+        return taskId.get(0);
+    }
+
+    private void deleteFromTreeSetByTaskType(TaskType type) {
+        List<Task> newTaskTreeSet = new ArrayList<>();
+        newTaskTreeSet = taskTreeSet.stream().filter(task -> type.equals(task.getType())).collect(Collectors.toList());
+        taskTreeSet.clear();
+        taskTreeSet.addAll(newTaskTreeSet);
+    }
+
 }

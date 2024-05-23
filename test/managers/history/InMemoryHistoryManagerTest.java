@@ -2,7 +2,6 @@ package managers.history;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import managers.history.InMemoryHistoryManager;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.Assertions;
@@ -70,8 +69,9 @@ class InMemoryHistoryManagerTest {
         historyManager.add(new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
         historyManager.add(new Task("Test 3 addNewTask", "Test 2 addNewTask description", 3, Status.NEW, 13, LocalDateTime.now().plusHours(6)));
         int innitialHistorySize = historyManager.getHistory().size();
-        historyManager.remove(3);
+        historyManager.removeLast();
         Assertions.assertEquals(historyManager.getHistory().size(), innitialHistorySize - 1);
+        Assertions.assertEquals(historyManager.getLast(), new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
     }
 
     @Test
@@ -82,6 +82,37 @@ class InMemoryHistoryManagerTest {
         int innitialHistorySize = historyManager.getHistory().size();
         historyManager.remove(2);
         Assertions.assertEquals(historyManager.getHistory().size(), innitialHistorySize - 1);
+    }
+
+    @Test
+    public void addFirst() {
+        historyManager.add(new Task("Test 2 addNewTask", "Test 2 addNewTask description", 1, Status.NEW, 13, LocalDateTime.now().plusHours(2)));
+        historyManager.add(new Task("Test 3 addNewTask", "Test 2 addNewTask description", 4, Status.NEW, 13, LocalDateTime.now().plusHours(10)));
+        historyManager.addFirst(new Task("Test first addNewTask", "Test 2 addNewTask description", 12, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
+        Assertions.assertEquals(historyManager.getFisrt(), new Task("Test first addNewTask", "Test 2 addNewTask description", 12, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
+    }
+
+    @Test
+    public void removeFirstTest() {
+        historyManager.add(new Task("Test 2 addNewTask",
+                "Test 2 addNewTask description",
+                1,
+                Status.NEW,
+                13,
+                LocalDateTime.now().plusHours(2)));
+        historyManager.add(new Task("Test 3 addNewTask",
+                "Test 2 addNewTask description",
+                4,
+                Status.NEW,
+                13,
+                LocalDateTime.now().plusHours(10)));
+        historyManager.removeFirst();
+        Assertions.assertEquals(historyManager.getFisrt(), new Task("Test 3 addNewTask",
+                "Test 2 addNewTask description",
+                4,
+                Status.NEW,
+                13,
+                LocalDateTime.now().plusHours(10)));
     }
 }
 

@@ -14,37 +14,51 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     private final T manager;
     protected static LocalDateTime now = LocalDateTime.now();
+    protected Integer taskId;
+    protected Integer epicId;
+    protected Integer subId;
+
+
     public TaskManagerTest(T manager) {
         this.manager = manager;
     }
 
 
-    @Test
-    void createSubtaskAndEpicTest() {
-        manager.createEpic(manager.createEpic(new Epic("Test epic",
+    @BeforeEach
+    public void beforeEach() {
+        manager.deleteAllTasks();
+        manager.deleteAllSubtasks();
+        manager.deleteAllEpics();
+        manager.createEpic(new Epic("Test epic",
                 "Test",
                 0,
-                Status.NEW)));
+                Status.NEW));
+        epicId = manager.findTaskIdByName("Test epic");
         manager.createSubTask((new Subtask("Test Sub",
                 "Test",
                 Status.NEW,
-                1,
                 0,
+                epicId,
                 20,
                 now)));
-
-        Assertions.assertFalse(manager.getSubtasks().isEmpty());
-        Assertions.assertFalse(manager.getEpics().isEmpty());
-    }
-
-    @Test
-    public void createTaskTest() {
         manager.createTask(new Task("Test task",
                 "test description",
                 0,
                 Status.NEW,
                 40,
                 now.plusHours(1)));
+        taskId = manager.findTaskIdByName("Test task");
+        subId = manager.findTaskIdByName("Test Sub");
+    }
+
+    @Test
+    void createSubtaskAndEpicTest() {
+        Assertions.assertFalse(manager.getSubtasks().isEmpty());
+        Assertions.assertFalse(manager.getEpics().isEmpty());
+    }
+
+    @Test
+    public void createTaskTest() {
         Assertions.assertFalse(manager.getTasks().isEmpty());
     }
 
@@ -52,20 +66,21 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateTaskTest() {
         Assertions.assertNotNull(manager.updateTask(new Task("Updated Test task",
                 "Updated test description",
-                4,
+                taskId,
                 Status.NEW,
                 40,
                 now.plusHours(1))));
-        Assertions.assertEquals(manager.getTaskById(4).getName(), "Updated Test task");
+        Assertions.assertEquals(manager.getTaskById(taskId).getName(), "Updated Test task");
     }
 
     @Test
     public void updateEpicTest() {
-        Assertions.assertNotNull(manager.updateEpic(new Epic("Updated Epic",
+        Epic epic = new Epic("Updated Epic",
                 "Updated describtion",
-                0,
-                Status.IN_PROGRESS)));
-        Assertions.assertEquals(manager.getEpicById(0).getName(), "Updated Epic");
+                epicId,
+                Status.NEW);
+        Assertions.assertNotNull(manager.updateEpic(epic));
+        Assertions.assertEquals(manager.getEpicById(epicId).getName(), "Updated Epic");
     }
 
     @Test
@@ -73,31 +88,25 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Assertions.assertNotNull(manager.updateSubtasks(new Subtask("First updated sub",
                 "Updated Sub",
                 Status.IN_PROGRESS,
-                2,
-                0,
+                subId,
+                epicId,
                 20,
                 now)));
-        Assertions.assertEquals(manager.getSubtaskById(2).getName(), "First updated sub");
+        Assertions.assertEquals(manager.getSubtaskById(subId).getName(), "First updated sub");
     }
     @Test
     public void getEpicSubtasksTest() {
-        Assertions.assertEquals(manager.getEpicSubtasks(0).size(), 1);
+        Assertions.assertEquals(manager.getEpicSubtasks(epicId).size(), 1);
     }
 
     @Test
     public void getTasksTest() {
-        manager.createTask(manager.createTask(new Task("Test task2",
-                "test description",
-                0,
-                Status.NEW,
-                40,
-                now.plusHours(3))));
-        Assertions.assertFalse(manager.getTasks().isEmpty());
+        Assertions.assertEquals(manager.getTasks().size(), 1);
     }
 
     @Test
     public void getEpicsTest() {
-        Assertions.assertEquals(manager.getEpics().size(), 2);
+        Assertions.assertEquals(manager.getEpics().size(), 1);
     }
 
     @Test
@@ -107,17 +116,18 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getEpicByIdTest() {
-        Assertions.assertNotNull(manager.getEpicById(0));
+        Assertions.assertNotNull(manager.getEpicById(epicId));
     }
 
     @Test
     public void getTaskByIdTest() {
-        Assertions.assertNotNull(manager.getTaskById(4));
+        Assertions.assertNotNull(manager.getTaskById(taskId));
     }
 
     @Test
     public void getSubtaskByIdTest() {
-        Assertions.assertNotNull(manager.getSubtaskById(2));
+        //System.out.println(manager.getSubtasks());
+        Assertions.assertNotNull(manager.getSubtaskById(subId));
     }
 
     @Test
@@ -127,8 +137,25 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getPrioritizedTasks() {
-        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getSubtaskById(2).getName());
+        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getEpicById(epicId).getName());
     }
 
+    @Test
+    public void deleteTaskByIDTest() {
+        manager.deleteTaskById(taskId);
+        Assertions.assertEquals(0, manager.getTasks().size());
+    }
+
+    @Test
+    public void deleteSubTaskByIdTest() {
+        manager.deleteSubtaskById(subId);
+        Assertions.assertEquals(0, manager.getSubtasks().size());
+    }
+
+    @Test
+    public void deleteEpicByIdTest() {
+        manager.deleteEpicById(epicId);
+        Assertions.assertEquals(0, manager.getEpics().size());
+    }
 
 }

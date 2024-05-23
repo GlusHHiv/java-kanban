@@ -50,4 +50,6 @@ public interface TaskManager {
     List<Task> getHistoryFromTaskManager();
 
     TreeSet<Task> getPrioritizedTasks();
+
+    Integer findTaskIdByName(String name);
 }

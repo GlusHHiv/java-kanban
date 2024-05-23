@@ -42,7 +42,6 @@ public class Subtask extends Task {
         Subtask otherSubtask = (Subtask) obj;
         return Objects.equals(getName(), otherSubtask.getName()) &&
                 Objects.equals(getDescription(), otherSubtask.getDescription()) &&
-                Objects.equals(getId(), otherSubtask.getId()) &&
                 Objects.equals(getStatus(), otherSubtask.getStatus()) &&
                 Objects.deepEquals(getEpicId(), otherSubtask.getEpicId());
     }
