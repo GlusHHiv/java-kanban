@@ -19,7 +19,7 @@ public class Subtask extends Task {
                 "', status: " + getStatus() +
                 ", epicId: " + epicId +
                 ", type: " + getType() +
-                "startTime" + startTime.format(TO_STRING_FORMAT);
+                "startTime" + startTime.format(toStringFormat);
     }
 
 

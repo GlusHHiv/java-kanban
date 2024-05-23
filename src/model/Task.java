@@ -19,8 +19,8 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
-    private final  DateTimeFormatter NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-    protected final  DateTimeFormatter TO_STRING_FORMAT = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
+    private final  DateTimeFormatter numberFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    protected final  DateTimeFormatter toStringFormat = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
 
     public Task() {
         name = "null Task";
@@ -55,7 +55,7 @@ public class Task {
                 ", description='" + description +
                 ", id: " + getId() +
                 ", status='" + status +
-                "startTime" + startTime.format(TO_STRING_FORMAT);
+                "startTime" + startTime.format(toStringFormat);
     }
 
     public String getName() {
@@ -138,11 +138,11 @@ public class Task {
     }
 
     public Long getStartTimeInNumber() {
-        return Long.parseLong(startTime.format(NUMBER_FORMAT));
+        return Long.parseLong(startTime.format(numberFormat));
     }
 
     public Long getEndTimeInNumber() {
-        return Long.parseLong(endTime.format(NUMBER_FORMAT));
+        return Long.parseLong(endTime.format(numberFormat));
     }
 }
 

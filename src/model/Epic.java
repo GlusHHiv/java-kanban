@@ -33,7 +33,7 @@ public class Epic extends Task {
                 "', status: " + getStatus() +
                 ", Subtasks: " + subtasks.toString() +
                 ", type: " + getType() +
-                "startTime" + startTime.format(TO_STRING_FORMAT);
+                "startTime" + startTime.format(toStringFormat);
 
     }
 
