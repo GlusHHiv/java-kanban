@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subtasks = new ArrayList<>();
+
 
     public Epic(String name, String description, Integer id, Status status) {
-        super(name, description, id, status);
-
+        super(name, description, id, status, TaskType.EPIC);
     }
 
     public boolean addSubtasks(int subId) { //В менеджере есть логика по
@@ -24,14 +23,16 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return  "\nName: " + getName() +
+        return "\nName: " + getName() +
                 ", id: " + getId() +
                 ", description: " + "'" + getDescription() +
                 "', status: " + getStatus() +
-                ", Subtasks: " + subtasks.toString();
+                ", Subtasks: " + subtasks.toString() +
+                ", type: " + getType();
+
     }
 
-    public ArrayList<Integer> getSubtasks() {
+    public  ArrayList<Integer> getSubtasks() {
         return subtasks;
     }
 
@@ -55,5 +56,6 @@ public class Epic extends Task {
                 Objects.equals(getStatus(), otherEpic.getStatus()) &&
                 Objects.deepEquals(getSubtasks(), otherEpic.getSubtasks());
     }
+
 
 }

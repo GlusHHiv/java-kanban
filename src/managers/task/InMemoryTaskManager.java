@@ -11,15 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    private static final HashMap<Integer, Task> tasks = new HashMap<>();
-    private static final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
-    private static final HashMap<Integer, Epic> epics = new HashMap<>();
-    private static int id = 0;
-    private static HistoryManager historyManager;
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, model.Subtask> subtasks = new HashMap<>();
+    protected final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected static int id = 0;
+    protected static HistoryManager historyManager;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
+
 
     @Override
     public Subtask createSubTask(Subtask subtask) {
@@ -155,7 +156,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-    private void updateEpicStatus(Epic epic) {
+    protected void updateEpicStatus(Epic epic) {
         int doneCount = 0;
         int inProgressCount = 0;
 
@@ -220,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int id) {
-        historyManager.add(epics.get(id));
+        historyManager.add((Task) epics.get(id));
         return epics.get(id);
     }
 
@@ -237,7 +238,7 @@ public class InMemoryTaskManager implements TaskManager {
         return tasks.get(id);
     }
 
-    private void addSubtaskToEpic(int epicId, int subId) {
+    protected  void addSubtaskToEpic(int epicId, int subId) {
         if (!(subtasks.containsKey(subId))) {
             return;
         }
@@ -259,4 +260,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void resetId() {
         id = 0;
     }
+
+
 }
