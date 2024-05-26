@@ -28,7 +28,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
                 "Test",
                 0,
                 Status.NEW));
-        epicId = manager.findTaskIdByName("Test epic");
+        epicId = manager.getEpics().get(0).getId();
         manager.createSubTask((new Subtask("Test Sub",
                 "Test",
                 Status.NEW,

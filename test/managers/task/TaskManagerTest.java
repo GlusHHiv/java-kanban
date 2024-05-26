@@ -33,7 +33,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 "Test",
                 0,
                 Status.NEW));
-        epicId = manager.findTaskIdByName("Test epic");
+        epicId = manager.getEpics().get(0).getId();
         manager.createSubTask((new Subtask("Test Sub",
                 "Test",
                 Status.NEW,
@@ -137,7 +137,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getPrioritizedTasks() {
-        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getEpicById(epicId).getName());
+        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getSubtasks().get(0).getName());
     }
 
     @Test

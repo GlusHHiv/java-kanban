@@ -13,7 +13,7 @@ import java.util.Comparator;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static File file;
-    ArrayList<Integer> historyIds = new ArrayList<>();
+    private ArrayList<Integer> historyIds = new ArrayList<>();
 
 
     private FileBackedTaskManager(File file, HistoryManager historyManager) {
@@ -30,7 +30,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 boolean isPreviosEmpty = false;
                 while (buffer.ready()) {
                     line = buffer.readLine();
-                    if (Convertor.convertStringToTask(line) == null) {
+                    if (Convertor.convertStringToTaskType(line) == null) {
                         break;
                     }
                     if (isPreviosEmpty) {
@@ -48,17 +48,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     } else if (line.isEmpty()) {
                         isPreviosEmpty = true;
                     }
-                    if (Convertor.convertStringToTask(line).containsKey(TaskType.SUBTASK)) {
-                        Subtask subtask = (Subtask) Convertor.convertStringToTask(line).get(TaskType.SUBTASK);
+                    if (Convertor.convertStringToTaskType(line).equals("SUBTASK")) {
+                        Subtask subtask = (Subtask) Convertor.lineToSubtask(line);
                         subtasks.put(subtask.getId(), subtask);
                         addToTreeSet(subtask);
                         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
-                    } else if (Convertor.convertStringToTask(line).containsKey(TaskType.EPIC)) {
-                        Epic epic = (Epic) Convertor.convertStringToTask(line).get(TaskType.EPIC);
+                    } else if (Convertor.convertStringToTaskType(line).equals("EPIC")) {
+                        Epic epic = (Epic) Convertor.lineToEpic(line);
                         epics.put(epic.getId(), epic);
                         addToTreeSet(epic);
-                    } else if (Convertor.convertStringToTask(line).containsKey(TaskType.TASK)) {
-                        Task task = Convertor.convertStringToTask(line).get(TaskType.TASK);
+                    } else if (Convertor.convertStringToTaskType(line).equals("TASK")) {
+                        Task task = Convertor.lineToTask(line);
                         tasks.put(task.getId(), task);
                         addToTreeSet(task);
                     }

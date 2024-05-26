@@ -1,4 +1,4 @@
-package model;
+package managers.history;
 
 
 import java.util.HashMap;

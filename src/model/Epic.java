@@ -59,4 +59,8 @@ public class Epic extends Task {
                 Objects.equals(getDescription(), otherEpic.getDescription()) &&
                 Objects.equals(getStatus(), otherEpic.getStatus());
     }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }

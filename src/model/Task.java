@@ -22,10 +22,6 @@ public class Task {
     private final  DateTimeFormatter numberFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
     protected final  DateTimeFormatter toStringFormat = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
 
-    public Task() {
-        name = "null Task";
-    }
-
     public Task(String name, String description, Integer id, Status status, Integer duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
@@ -101,9 +97,6 @@ public class Task {
                 Objects.equals(status, otherTask.status);
     }
 
-    public boolean isNullTask() {
-        return name.equals("null Task");
-    }
 
     public TaskType getType() {
         return type;

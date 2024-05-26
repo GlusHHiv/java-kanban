@@ -4,8 +4,6 @@ import model.Task;
 
 import java.util.List;
 
-import model.LinkedMapList;
-
 public class InMemoryHistoryManager implements HistoryManager {
     private final LinkedMapList<Task> history = new LinkedMapList<>();
 

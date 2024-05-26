@@ -54,37 +54,53 @@ public class Convertor {
         return ids;
     }
 
-    public static HashMap<TaskType, Task> convertStringToTask(String line) {
-        if (line.equals("id,type,name,status,description,epic")) {
+    public static String convertStringToTaskType(String line) {
+        HashMap<TaskType, Task> map = new HashMap<>();
+        if (line.equals("id,type,name,status,description,duration,startTime,epic")) {
             return  null;
         } else if (line.isEmpty() || line.isBlank()) {
             return null;
         }
         String[] str = line.split(",");
-        Integer taskId = Integer.parseInt(str[0]);
         if (str[1].equals("TASK")) {
-            Task task = new Task(str[2],
-                    str[4],
-                    taskId,
-                    Status.valueOf(str[3]),
-                    Integer.parseInt(str[5]),
-                    LocalDateTime.parse(str[6]));
-            HashMap<TaskType, Task> map = new HashMap<>();
-            map.put(TaskType.TASK, task);
-            return map;
+            return "TASK";
         } else if (str[1].equals("EPIC")) {
-            Epic epic = new Epic(str[2], str[4], taskId, Status.valueOf(str[3]));
-            epic.setDuration(Duration.ofMinutes(Integer.parseInt(str[5])));
-            epic.setStartTime(LocalDateTime.parse(str[6]));
-            HashMap<TaskType, Task> map = new HashMap<>();
-            map.put(TaskType.EPIC, epic);
-            return map;
+            return "EPIC";
         } else {
-            Integer epicId = Integer.parseInt(str[7]);
-            Subtask subtask = new Subtask(str[2], str[4], Status.valueOf(str[3]), taskId, epicId, Integer.parseInt(str[5]), LocalDateTime.parse(str[6]));
-            HashMap<TaskType, Task> map = new HashMap<>();
-            map.put(TaskType.SUBTASK, subtask);
-            return map;
+            return "SUBTASK";
         }
+    }
+
+    public static Task lineToTask(String line) {
+        String[] str = line.split(",");
+        Integer taskId = Integer.parseInt(str[0]);
+         return new Task(str[2],
+                str[4],
+                taskId,
+                Status.valueOf(str[3]),
+                Integer.parseInt(str[5]),
+                LocalDateTime.parse(str[6]));
+    }
+
+    public static Epic lineToEpic(String line) {
+        String[] str = line.split(",");
+        Integer taskId = Integer.parseInt(str[0]);
+        Epic epic = new Epic(str[2], str[4], taskId, Status.valueOf(str[3]));
+        epic.setDuration(Duration.ofMinutes(Integer.parseInt(str[5])));
+        epic.setStartTime(LocalDateTime.parse(str[6]));
+        return epic;
+    }
+
+    public static Subtask lineToSubtask(String line) {
+        String[] str = line.split(",");
+        Integer taskId = Integer.parseInt(str[0]);
+        Integer epicId = Integer.parseInt(str[7]);
+        return new Subtask(str[2],
+                str[4],
+                Status.valueOf(str[3]),
+                taskId,
+                epicId,
+                Integer.parseInt(str[5]),
+                LocalDateTime.parse(str[6]));
     }
 }
