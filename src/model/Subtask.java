@@ -1,14 +1,13 @@
 package model;
 
-import managers.Managers;
-
 import java.util.Objects;
 
 public class Subtask extends Task {
     private  Integer epicId;
+
     public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
         super(name, description, id, status);
-        setEpicId(epicId);
+        this.epicId = epicId;
     }
 
     @Override
@@ -25,8 +24,7 @@ public class Subtask extends Task {
     }
 
     public boolean setEpicId(int epicId) {
-        if(epicId == getId()) {
-            System.out.println("Ошибка.");
+        if (epicId == getId()) {
             return false;
         }
         return true;

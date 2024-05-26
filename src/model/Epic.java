@@ -1,6 +1,5 @@
 package model;
 
-import managers.Managers;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,7 +16,6 @@ public class Epic extends Task {
                                             // которой сабтаск не может быть добавлен в эпик
                                             //если он не содержится в списке менеджера.
         if (getId() == subId) {
-            System.out.println("Ошибка.");
             return false;
         }
         subtasks.add(subId);

@@ -1,0 +1,59 @@
+[33mcommit 95e59107f6effaae46b0b177fc31e8ef66feb92d[m[33m ([m[1;36mHEAD -> [m[1;32msprint_6-solution[m[33m)[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Fri Mar 8 02:18:31 2024 +0300
+
+    add: LinkedMapList
+
+[33mcommit 6dad0bda9762b0b53fd8f1a6607ccc263e347428[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Fri Feb 23 00:14:05 2024 +0300
+
+    fix: createSubtask
+
+[33mcommit eb9c30dff2358e34870056636c5406ddff5236bd[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Wed Feb 21 15:42:23 2024 +0300
+
+    fix: models
+
+[33mcommit 8d1399bee9fb046f18c5ca5a0a1066414d1c2502[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Tue Feb 20 20:41:40 2024 +0300
+
+    refactor: managers
+
+[33mcommit a97a61fbeca43f7007f7e8c4791a679b37009ac2[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Tue Feb 20 07:04:13 2024 +0300
+
+    fix: logic
+
+[33mcommit bad708601580bbf8e489093dc1a7e3cdab655fbb[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Mon Feb 19 03:06:36 2024 +0300
+
+    add: JUnit added
+
+[33mcommit 98ccafb4ef7fcd9a049489495e9e8cdc9beffae6[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Tue Jan 23 23:22:09 2024 +0100
+
+    add: добавлены методы получения по идентификатору
+
+[33mcommit 4da01cf39c0729278e52704e773232acf3605f3e[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Tue Jan 23 23:15:02 2024 +0100
+
+    fix: fixed logic
+
+[33mcommit a6d265fcccd63e86f95e53b1614a35d8f9e3490e[m
+Author: IvanGlush <poliantsevivan@gmail.com>
+Date:   Thu Jan 11 13:13:23 2024 +0100
+
+    first commit
+
+[33mcommit 3fb42423c1ebd5eea9d69d2260cae5617495ff2d[m
+Author: GlusHHiv <115188446+GlusHHiv@users.noreply.github.com>
+Date:   Thu Jan 11 12:56:45 2024 +0100
+
+    Initial commit
