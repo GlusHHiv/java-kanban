@@ -103,6 +103,7 @@ public class Convertor {
                 Integer.parseInt(str[5]),
                 LocalDateTime.parse(str[6]));
     }
+    
     public static ArrayList<Integer> convertHistoryToString(String historyLine) {
         ArrayList<Integer> historyIds = new ArrayList<>();
         String[] str = historyLine.split("\\{");
