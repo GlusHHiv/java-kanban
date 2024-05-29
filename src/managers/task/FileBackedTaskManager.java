@@ -97,8 +97,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 if (!historyManager.getHistory().isEmpty()) {
                     writer.write("\n");
-                    ArrayList<Integer> historyIds = Convertor.
-                            convertHistoryToString(getHistoryFromTaskManager().toString());
+                    ArrayList<Integer> historyIds = Convertor
+                            .convertHistoryToString(getHistoryFromTaskManager().toString());
                     writer.write(historyIds.toString());
                 }
             } catch (IOException exception) {
