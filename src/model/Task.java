@@ -3,7 +3,6 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Task {
@@ -12,9 +11,7 @@ public class Task {
     private Integer id;
     private Status status;
 
-    protected Integer epicId;
     private  TaskType type;
-    protected ArrayList<Integer> subtasks = new ArrayList<>();
     protected Duration duration;
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
@@ -47,10 +44,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "\nName='" + name +
-                ", description='" + description +
+        return "\nName: " + getName() +
                 ", id: " + getId() +
-                ", status='" + status +
+                ", description: " + "'" + getDescription() +
+                "', status: " + getStatus() +
+                ", type: " + getType() +
                 "startTime" + startTime.format(toStringFormat);
     }
 

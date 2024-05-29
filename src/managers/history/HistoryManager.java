@@ -11,10 +11,6 @@ public interface HistoryManager {
 
     void addFirst(Task task);
 
-    boolean removeFirst();
-
-    boolean removeLast();
-
     Task getFisrt();
 
     Task getLast(); }

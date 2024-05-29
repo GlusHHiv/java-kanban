@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class Subtask extends Task {
 
+    private final Integer epicId;
 
     public Subtask(String name, String description, Status status, Integer id, Integer epicId, Integer duration, LocalDateTime startTime) {
         super(name, description, id, status, TaskType.SUBTASK, duration, startTime);

@@ -69,7 +69,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
         historyManager.add(new Task("Test 3 addNewTask", "Test 2 addNewTask description", 3, Status.NEW, 13, LocalDateTime.now().plusHours(6)));
         int innitialHistorySize = historyManager.getHistory().size();
-        historyManager.removeLast();
+        historyManager.remove(historyManager.getLast().getId());
         Assertions.assertEquals(historyManager.getHistory().size(), innitialHistorySize - 1);
         Assertions.assertEquals(historyManager.getLast(), new Task("Test 4 addNewTask", "Test 2 addNewTask description", 2, Status.NEW, 13, LocalDateTime.now().plusHours(4)));
     }
@@ -106,7 +106,7 @@ class InMemoryHistoryManagerTest {
                 Status.NEW,
                 13,
                 LocalDateTime.now().plusHours(10)));
-        historyManager.removeFirst();
+        historyManager.remove(historyManager.getFisrt().getId());
         Assertions.assertEquals(historyManager.getFisrt(), new Task("Test 3 addNewTask",
                 "Test 2 addNewTask description",
                 4,

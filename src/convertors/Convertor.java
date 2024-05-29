@@ -103,4 +103,12 @@ public class Convertor {
                 Integer.parseInt(str[5]),
                 LocalDateTime.parse(str[6]));
     }
+    public static ArrayList<Integer> convertHistoryToString(String historyLine) {
+        ArrayList<Integer> historyIds = new ArrayList<>();
+        String[] str = historyLine.split("\\{");
+        for (int i = 1; i < str.length; i++) {
+            historyIds.add(Integer.parseInt(str[i].substring(str[i].indexOf("id: ") + 4, str[i].indexOf("id: ") + 5)));
+        }
+        return historyIds;
+    }
 }

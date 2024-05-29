@@ -13,7 +13,6 @@ import java.util.Comparator;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static File file;
-    private ArrayList<Integer> historyIds = new ArrayList<>();
 
 
     private FileBackedTaskManager(File file, HistoryManager historyManager) {
@@ -34,7 +33,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         break;
                     }
                     if (isPreviosEmpty) {
-                        historyIds = Convertor.convertHistoryFromString(line);
+                        ArrayList<Integer> historyIds = Convertor.convertHistoryFromString(line);
                         for (Integer i: historyIds) {
                             if (subtasks.containsKey(i)) {
                                 historyManager.add(subtasks.get(i));
@@ -89,24 +88,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 for (Integer i : ids) { // запись в файл задач по id по порядку возрастания
                     if (subtasks.containsKey(i)) {
-                        if (historyManager.getHistory().contains(subtasks.get(i))) {
-                            historyIds.add(i);
-                        }
                         writer.write(Convertor.convertSubtaskToString(subtasks.get(i)));
                     } else if (epics.containsKey(i)) {
-                        if (historyManager.getHistory().contains(i)) {
-                            historyIds.add(i);
-                        }
                         writer.write(Convertor.convertEpicToString(epics.get(i)));
                     } else if (tasks.containsKey(i)) {
-                        if (historyManager.getHistory().contains(tasks.get(i))) {
-                            historyIds.add(i);
-                        }
                         writer.write(Convertor.convertTaskToString(tasks.get(i)));
                     }
                 }
-                if (!historyIds.isEmpty()) {
+                if (!historyManager.getHistory().isEmpty()) {
                     writer.write("\n");
+                    ArrayList<Integer> historyIds = Convertor.
+                            convertHistoryToString(getHistoryFromTaskManager().toString());
                     writer.write(historyIds.toString());
                 }
             } catch (IOException exception) {
@@ -221,7 +213,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public Epic getEpicById(int id) {
         Epic epic = super.getEpicById(id);
-        historyIds.add(id);
         save();
 
         return epic;
@@ -230,7 +221,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public Task getTaskById(int id) {
         Task task = super.getTaskById(id);
-        historyIds.add(id);
         save();
         return task;
     }
@@ -238,7 +228,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public Subtask getSubtaskById(int id) {
         Subtask subtask = super.getSubtaskById(id);
-        historyIds.add(id);
         save();
         return subtask;
     }

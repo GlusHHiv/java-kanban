@@ -19,7 +19,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         }
         @BeforeAll
         public static void beforeAll() throws IOException {
-                file = File.createTempFile("test", ".txt");
+                file = File.createTempFile("test", ".cvs");
                 manager = FileBackedTaskManager.loadFromFile(file);
         }
 
@@ -29,6 +29,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
                 manager.loadFromFile(file);
                 Assertions.assertEquals(manager.getTasks().size(), 1);
         }
+
 }
 
 

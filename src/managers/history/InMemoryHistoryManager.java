@@ -39,22 +39,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public boolean removeFirst() {
-        if (history.isEmpty()) {
-            return false;
-        }
-        return history.removeFirstElement();
-    }
-
-    @Override
-    public boolean removeLast() {
-        if (history.isEmpty()) {
-            return false;
-        }
-        return history.removeLastElement();
-    }
-
-    @Override
     public Task getFisrt() {
         return history.getFirst();
     }

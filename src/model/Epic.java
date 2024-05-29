@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
+    protected ArrayList<Integer> subtasks = new ArrayList<>();
 
 
     public Epic(String name, String description, Integer id, Status status) {
