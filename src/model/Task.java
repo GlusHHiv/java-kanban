@@ -1,6 +1,8 @@
 package model;
 
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -9,36 +11,45 @@ public class Task {
     private Integer id;
     private Status status;
 
-    protected Integer epicId;
     private  TaskType type;
-    protected ArrayList<Integer> subtasks = new ArrayList<>();
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
-    public Task() {
-        name = "null Task";
-    }
+    private final  DateTimeFormatter numberFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    protected final  DateTimeFormatter toStringFormat = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
 
-    public Task(String name, String description, Integer id, Status status) {
+    public Task(String name, String description, Integer id, Status status, Integer duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
         this.type = TaskType.TASK;
+        this.duration = Duration.ofMinutes(duration);
+        this.startTime = startTime;
+        calculateEndTime();
     }
 
-    public Task(String name, String description, Integer id, Status status, TaskType type) {
+    public Task(String name, String description, Integer id, Status status, TaskType type, Integer duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = status;
         this.type = type;
+        this.duration = Duration.ofMinutes(duration);
+        this.startTime = startTime;
+        calculateEndTime();
     }
+
 
     @Override
     public String toString() {
-        return "\nName='" + name + '\'' +
-                ", description='" + description + '\'' +
+        return "\nName: " + getName() +
                 ", id: " + getId() +
-                ", status='" + status + '\'';
+                ", description: " + "'" + getDescription() +
+                "', status: " + getStatus() +
+                ", type: " + getType() +
+                "startTime" + startTime.format(toStringFormat);
     }
 
     public String getName() {
@@ -81,16 +92,48 @@ public class Task {
         Task otherTask = (Task) obj;
         return Objects.equals(name, otherTask.name) &&
                 Objects.equals(description, otherTask.description) &&
-                Objects.equals(id, otherTask.id) &&
                 Objects.equals(status, otherTask.status);
     }
 
-    public boolean isNullTask() {
-        return name.equals("null Task");
-    }
 
     public TaskType getType() {
         return type;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void addMinutes(Long minutes) {
+        duration = duration.plusMinutes(minutes);
+    }
+
+    public void calculateEndTime() {
+        endTime = startTime.plus(duration);
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Long getStartTimeInNumber() {
+        return Long.parseLong(startTime.format(numberFormat));
+    }
+
+    public Long getEndTimeInNumber() {
+        return Long.parseLong(endTime.format(numberFormat));
     }
 }
 

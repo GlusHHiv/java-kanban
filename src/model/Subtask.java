@@ -1,12 +1,14 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
 
+    private final Integer epicId;
 
-    public Subtask(String name, String description, Status status, Integer id, Integer epicId) {
-        super(name, description, id, status, TaskType.SUBTASK);
+    public Subtask(String name, String description, Status status, Integer id, Integer epicId, Integer duration, LocalDateTime startTime) {
+        super(name, description, id, status, TaskType.SUBTASK, duration, startTime);
         this.epicId = epicId;
     }
 
@@ -17,7 +19,8 @@ public class Subtask extends Task {
                 ", description: " + "'" + getDescription() +
                 "', status: " + getStatus() +
                 ", epicId: " + epicId +
-                ", type: " + getType();
+                ", type: " + getType() +
+                "startTime" + startTime.format(toStringFormat);
     }
 
 
@@ -40,7 +43,6 @@ public class Subtask extends Task {
         Subtask otherSubtask = (Subtask) obj;
         return Objects.equals(getName(), otherSubtask.getName()) &&
                 Objects.equals(getDescription(), otherSubtask.getDescription()) &&
-                Objects.equals(getId(), otherSubtask.getId()) &&
                 Objects.equals(getStatus(), otherSubtask.getStatus()) &&
                 Objects.deepEquals(getEpicId(), otherSubtask.getEpicId());
     }

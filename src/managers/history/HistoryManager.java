@@ -7,4 +7,10 @@ public interface HistoryManager {
 
     List<Task> getHistory();
 
-    void remove(int id); }
+    boolean remove(int id);
+
+    void addFirst(Task task);
+
+    Task getFisrt();
+
+    Task getLast(); }

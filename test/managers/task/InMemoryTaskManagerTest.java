@@ -8,123 +8,138 @@ import model.Task;
 
 import org.junit.jupiter.api.*;
 
-class InMemoryTaskManagerTest {
-    private final static InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
-    static Epic epic;
+import java.time.LocalDateTime;
 
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
+    private static InMemoryTaskManager taskManager;
+    private static InMemoryTaskManager manager = new InMemoryTaskManager(new InMemoryHistoryManager());
 
+    private InMemoryTaskManagerTest() {
+        super(manager);
+    }
 
     @BeforeEach
     public void beforeEach() {
-        epic = new Epic("первый  эпик", "описание одинепик", 0, Status.NEW);
-        taskManager.createEpic(new Epic("первый  эпик", "описание одинепик", null, Status.NEW));
-        taskManager.createSubTask(new Subtask("первый саб_епик1", "описание одинсаб", Status.NEW, 1, 0));
-        taskManager.createSubTask(new Subtask("второй саб_епик2", "описание двасаб", Status.NEW, 2, 0));
-        taskManager.createTask(new Task("первая задача", "описание один", 0, Status.NEW));
-        taskManager.createEpic(new Epic("второй эпик", "описание дыаэпик", 0, Status.NEW));
-    }
-
-    @AfterEach
-    public void afterEach() {
-        taskManager.deleteAllTasks();
-        taskManager.deleteAllEpics();
-        taskManager.deleteAllSubtasks();
-        taskManager.resetId();
-    }
-
-    @Test
-    public void updateEpicStatus_epicStatusWith2NewSubtasks() {
-        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(),
+        taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
+        manager.deleteAllTasks();
+        manager.deleteAllSubtasks();
+        manager.deleteAllEpics();
+        manager.createEpic(new Epic("Test epic",
+                "Test",
+                0,
+                Status.NEW));
+        epicId = manager.getEpics().get(0).getId();
+        manager.createSubTask((new Subtask("Test Sub",
+                "Test",
                 Status.NEW,
-                "Нарушена зависимость статуса Эпика от сабтасков.");
-    }
-
-    @Test
-    public void updateSubtasks_updateSubtaskStatusToInProgress() {
-        taskManager.updateSubtasks(new Subtask("первый  саб", "описание одинсаб",
-                Status.IN_PROGRESS,
-                1,
-                0));
-        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(),
-                Status.IN_PROGRESS,
-                "Нарушена зависимость статуса Эпика от сабтасков.");
-    }
-
-    @Test
-    public void deleteSubtaskById_deleteOneSubtask() {
-        int initialSubSize = taskManager.getSubtasks().size();
-        taskManager.deleteSubtaskById(1);
-        Assertions.assertEquals(initialSubSize - 1,
-                taskManager.getSubtasks().size(),
-                "Сабтаск в списке менеджера не был удален.");
-        Assertions.assertEquals(1,
-                taskManager.getEpicSubtasks(0).size(),
-                "Сабтаск в списке эпика не был удален.");
-        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(),
+                0,
+                epicId,
+                20,
+                now)));
+        manager.createTask(new Task("Test task",
+                "test description",
+                0,
                 Status.NEW,
-                "Нарушена зависимость статуса Эпика от сабтасков.");
+                40,
+                now.plusHours(1)));
+        taskId = manager.findTaskIdByName("Test task");
+        subId = manager.findTaskIdByName("Test Sub");
     }
 
     @Test
-    public void deleteAllSubtasks() {
-        Subtask subtask = new Subtask("первый-удаленный саб_епик1",
-                "описание одинсаб",
+    public void EpicNewStatusTest() {
+
+        taskManager.createEpic(new Epic("Test epic",
+                "Test",
+                0,
+                Status.NEW));
+        taskManager.createSubTask((new Subtask("Test Sub1",
+                "Test",
+                Status.NEW,
+                0,
+                0,
+                20,
+                LocalDateTime.now())));
+
+        taskManager.createSubTask((new Subtask("Test Sub2",
+                "Test",
+                Status.NEW,
+                0,
+                0,
+                40,
+                LocalDateTime.now().plusHours(1))));
+        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(), Status.NEW);
+    }
+
+    @Test
+    public void EpicDoneStatusTest() {
+        taskManager.createEpic(new Epic("Test epic",
+                "Test",
+                0,
+                Status.NEW));
+        taskManager.createSubTask((new Subtask("Test Sub1",
+                "Test",
+                Status.DONE,
+                0,
+                0,
+                20,
+                LocalDateTime.now())));
+
+        taskManager.createSubTask((new Subtask("Test Sub2",
+                "Test",
+                Status.DONE,
+                0,
+                0,
+                40,
+                LocalDateTime.now().plusHours(1))));
+        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(), Status.DONE);
+    }
+
+    @Test
+    public void EpicNewAndDoneStatusTest() {
+        taskManager.createEpic(new Epic("Test epic",
+                "Test",
+                0,
+                Status.NEW));
+        taskManager.createSubTask((new Subtask("Test Sub1",
+                "Test",
+                Status.DONE,
+                0,
+                0,
+                20,
+                LocalDateTime.now())));
+
+        taskManager.createSubTask((new Subtask("Test Sub2",
+                "Test",
+                Status.NEW,
+                0,
+                0,
+                40,
+                LocalDateTime.now().plusHours(1))));
+        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(), Status.IN_PROGRESS);
+    }
+
+    @Test
+    public void EpicInProgressStatusTest() {
+        taskManager.createEpic(new Epic("Test epic",
+                "Test",
+                0,
+                Status.NEW));
+        taskManager.createSubTask((new Subtask("Test Sub1",
+                "Test",
                 Status.IN_PROGRESS,
                 0,
-                0);
-        taskManager.createSubTask(subtask);
-        taskManager.deleteAllSubtasks();
-        Assertions.assertEquals(0,
-                taskManager.getSubtasks().size(),
-                "Сабтаски в таск менеджер не удалились.");
-        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(),
-                Status.NEW,
-                "Нарушена зависимость статуса Эпика от сабтасков.");
+                0,
+                20,
+                LocalDateTime.now())));
 
-    }
-
-    @Test
-    public void deleteAllEpics() {
-        taskManager.deleteAllEpics();
-        Assertions.assertEquals(0,
-                taskManager.getEpics().size(),
-                "Эпики в таск менеджер не удалились");
-        Assertions.assertEquals(0,
-                taskManager.getSubtasks().size(),
-                "Сабтаски в таск менеджер не удалились");
-    }
-
-    @Test
-    public void deleteTaskById() {
-        Assertions.assertEquals(1,
-                taskManager.getTasks().size(),
-                "Список задач пуст.");
-        taskManager.deleteTaskById(3);
-        Assertions.assertEquals(0,
-                taskManager.getTasks().size(),
-                "Список задач не пуст.");
-    }
-
-    @Test
-    public void createSubtask_createSubtaskWithInvalidEpicId() {
-        int initialSubtasksSize = taskManager.getSubtasks().size();
-        taskManager.createSubTask(new Subtask("subtest", "subtest", Status.NEW, 0, 1));
-        Assertions.assertEquals(taskManager.getSubtasks().size(),
-                initialSubtasksSize,
-                "Сабтаск добавился в список сабтасков.");
-    }
-
-
-    @Test
-    public void getTaskById_compareReturndTasks() {
-        Assertions.assertEquals(taskManager.getTaskById(3),
-                taskManager.getTaskById(3),
-                "Возвращенны разные объекты.");
-    }
-
-    @Test
-    public  void getEpicById_compareReturnValue() {
-        Assertions.assertEquals(taskManager.getEpicById(0), taskManager.getEpicById(0), "Эпики не равны.");
-        Assertions.assertNotEquals(taskManager.getEpicById(4), taskManager.getEpicById(0), "Эпики равны");
+        taskManager.createSubTask((new Subtask("Test Sub2",
+                "Test",
+                Status.IN_PROGRESS,
+                0,
+                0,
+                40,
+                LocalDateTime.now().plusHours(1))));
+        Assertions.assertEquals(taskManager.getEpicById(0).getStatus(), Status.IN_PROGRESS);
     }
 }
