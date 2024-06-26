@@ -333,7 +333,7 @@ public class InMemoryTaskManager implements TaskManager {
         return taskTreeSet.stream()
                 .anyMatch(task1 -> ((task.getStartTime().isAfter(task1.getStartTime())
                         && task.getStartTime().isAfter(task1.getEndTime()))
-                        ||(task1.getStartTime().isAfter(task.getStartTime())
+                        || (task1.getStartTime().isAfter(task.getStartTime())
                         && task1.getStartTime().isAfter(task.getEndTime()))
                         || task.getStartTime().equals(task1.getStartTime())));
     }
