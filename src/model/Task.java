@@ -12,12 +12,12 @@ public class Task {
     private Status status;
 
     private  TaskType type;
-    protected Duration duration;
-    protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
+    protected  Duration duration;
+    protected  LocalDateTime startTime;
+    protected transient LocalDateTime endTime;
 
-    private final  DateTimeFormatter numberFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-    protected final  DateTimeFormatter toStringFormat = DateTimeFormatter.ofPattern("yy:MM:dd HH:mm");
+    private static final  DateTimeFormatter numberFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    public static final transient DateTimeFormatter toStringFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH.mm");
 
     public Task(String name, String description, Integer id, Status status, Integer duration, LocalDateTime startTime) {
         this.name = name;
@@ -49,7 +49,7 @@ public class Task {
                 ", description: " + "'" + getDescription() +
                 "', status: " + getStatus() +
                 ", type: " + getType() +
-                "startTime" + startTime.format(toStringFormat);
+                ", startTime: " + startTime.format(toStringFormat);
     }
 
     public String getName() {

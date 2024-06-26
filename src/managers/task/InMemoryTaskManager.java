@@ -34,14 +34,15 @@ public class InMemoryTaskManager implements TaskManager {
         taskTreeSet.add(subtask);
         addSubtaskToEpic(epics.get(subtask.getEpicId()).getId(), subtask.getId());
         updateEpicStatus(epics.get(subtask.getEpicId()));
-        updateEpicDuration(epics.get(subtask.getEpicId()));
         calculateEpicStartTimeAndEndTime(epics.get(subtask.getEpicId()));
+        updateEpicDuration(epics.get(subtask.getEpicId()));
         addToTreeSet(epics.get(subtask.getEpicId()));
         return subtask;
     }
 
     @Override
     public Task createTask(Task task) {
+        task.calculateEndTime();
         for (Task task1 : tasks.values()) {
             if (task1.equals(task)) {
                 return null;
@@ -329,11 +330,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isIntersection(Task task) {
-        return  taskTreeSet.stream()
-                .anyMatch(task1 -> ((task1.getStartTimeInNumber() >= task.getStartTimeInNumber()) &&
-                        (task1.getEndTimeInNumber() <= task.getStartTimeInNumber())) ||
-                        ((task1.getStartTimeInNumber() >= task.getEndTimeInNumber()) &&
-                                (task1.getEndTimeInNumber() <= task.getEndTimeInNumber())));
+        return taskTreeSet.stream()
+                .anyMatch(task1 -> ((task.getStartTime().isAfter(task1.getStartTime())
+                        && task.getStartTime().isAfter(task1.getEndTime()))
+                        ||(task1.getStartTime().isAfter(task.getStartTime())
+                        && task1.getStartTime().isAfter(task.getEndTime()))
+                        || task.getStartTime().equals(task1.getStartTime())));
     }
 
     protected void addToTreeSet(Task task) {
