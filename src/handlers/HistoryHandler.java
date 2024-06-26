@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
     private InMemoryTaskManager manager;
+    
     public HistoryHandler(TaskManager manager) {
         this.manager = (InMemoryTaskManager) manager;
     }
