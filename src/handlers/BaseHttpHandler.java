@@ -13,7 +13,7 @@ public class BaseHttpHandler {
         h.close();
     }
 
-    protected void sendNotFound(HttpExchange h, String erorText) throws IOException{
+    protected void sendNotFound(HttpExchange h, String erorText) throws IOException {
         byte[] resp = erorText.getBytes(StandardCharsets.UTF_8);
         h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         h.sendResponseHeaders(404, resp.length);
