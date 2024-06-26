@@ -14,7 +14,7 @@ public class HttpTaskServer {
     private static HttpServer httpServer;
     private final TaskManager manager;
 
-    public HttpTaskServer(TaskManager manager) throws IOException{
+    public HttpTaskServer(TaskManager manager) throws IOException {
         this.manager = manager;
         setServer();
     }
