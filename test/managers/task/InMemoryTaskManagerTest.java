@@ -41,7 +41,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
                 0,
                 Status.NEW,
                 40,
-                now.plusHours(1)));
+                taskTime));
         taskId = manager.findTaskIdByName("Test task");
         subId = manager.findTaskIdByName("Test Sub");
     }

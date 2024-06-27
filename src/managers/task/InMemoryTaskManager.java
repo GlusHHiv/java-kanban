@@ -330,12 +330,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean isIntersection(Task task) {
+
         return taskTreeSet.stream()
-                .anyMatch(task1 -> ((task.getStartTime().isAfter(task1.getStartTime())
-                        && task.getStartTime().isAfter(task1.getEndTime()))
-                        || (task1.getStartTime().isAfter(task.getStartTime())
-                        && task1.getStartTime().isAfter(task.getEndTime()))
-                        || task.getStartTime().equals(task1.getStartTime())));
+                .anyMatch(task1 -> ((task1.getStartTimeInNumber() >= task.getStartTimeInNumber()) &&
+                        (task1.getEndTimeInNumber() <= task.getStartTimeInNumber())) ||
+                        ((task1.getStartTimeInNumber() >= task.getEndTimeInNumber()) &&
+                                (task1.getEndTimeInNumber() <= task.getEndTimeInNumber())));
     }
 
     protected void addToTreeSet(Task task) {
