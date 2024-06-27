@@ -55,7 +55,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 return;
             case "UPDATE":
                 if (manager.updateSubtasks(postHandler(exchange)) != null) {
-                    sendText(exchange, "Task was updated :)" , 201);
+                    sendText(exchange, "Task was updated :)", 201);
                     return;
                 }
                 sendHasInteractions(exchange);
