@@ -14,6 +14,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     private final T manager;
     protected static LocalDateTime now = LocalDateTime.now();
+
+    protected static LocalDateTime taskTime = LocalDateTime.of(2024, 1, 1, 1,1, 1, 1);
     protected Integer taskId;
     protected Integer epicId;
     protected Integer subId;
@@ -46,7 +48,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 0,
                 Status.NEW,
                 40,
-                now.plusHours(1)));
+                taskTime));
         taskId = manager.findTaskIdByName("Test task");
         subId = manager.findTaskIdByName("Test Sub");
     }
@@ -137,11 +139,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getPrioritizedTasks() {
-        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getSubtasks().get(0).getName());
+        Assertions.assertEquals(manager.getPrioritizedTasks().first().getName(), manager.getTasks().get(0).getName());
     }
 
     @Test
     public void deleteTaskByIDTest() {
+        System.out.println(manager.getTasks());
         manager.deleteTaskById(taskId);
         Assertions.assertEquals(0, manager.getTasks().size());
     }

@@ -7,9 +7,10 @@ import managers.task.InMemoryTaskManager;
 import managers.task.TaskManager;
 
 public class Managers {
+    private static TaskManager manager = new InMemoryTaskManager(new InMemoryHistoryManager());
 
     public static TaskManager getDefault() {
-        return new InMemoryTaskManager(new InMemoryHistoryManager());
+        return manager;
     }
 
     public static HistoryManager getDefaultHistory() {
