@@ -1,5 +1,6 @@
 package handlers;
 
+import Util.HandlerUtil;
 import adapters.DurationTypeAdapter;
 import adapters.LocalDateTimeTypeAdapter;
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import managers.task.InMemoryTaskManager;
 import managers.task.TaskManager;
+import model.EndPoint;
 import model.Task;
 
 import java.io.IOException;
@@ -26,23 +28,23 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         String method = exchange.getRequestMethod();
-        String endpoint = getEndpoint(path, method);
-        int id;
+        EndPoint endpoint = HandlerUtil.getEndpoint(path, method);
+        Integer id;
         switch (endpoint) {
-            case "GET_TASK":
-                id = Integer.parseInt(path.split("/")[2]);
+            case GET_TASK:
+                id = HandlerUtil.getId(path);
                 Task task = manager.getTaskById(id);
                 if (task == null) {
                     sendHasInteractions(exchange);
                     return;
                 }
-                sendText(exchange, manager.getTaskById(id).toString(), 200);
+                sendText(exchange, task.toString(), 200);
                 return;
-            case "GET_ALL":
+            case GET_ALL:
                 sendText(exchange, manager.getTasks().toString(), 200);
                 return;
-            case "DELETE_TASK":
-                id = Integer.parseInt(path.split("/")[2]);
+            case DELETE_TASK:
+                id = HandlerUtil.getId(path);
                 manager.deleteTaskById(id);
                 sendText(exchange, "Task with id: "
                         + id
@@ -50,23 +52,23 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                         + "\nCurrent size of Tasks: "
                         + manager.getTasks().size(), 200);
                 return;
-            case "DELETE_ALL":
+            case DELETE_ALL:
                 manager.deleteAllTasks();
                 sendText(exchange, "All tasks were deleted :)", 200);
                 return;
-            case "UPDATE":
+            case UPDATE:
                 if (manager.updateTask(postHandler(exchange)) != null) {
                     sendText(exchange, "Task was updated :)", 201);
                     return;
                 }
                 sendHasInteractions(exchange);
-            case "CREATE":
+            case CREATE:
                 if (manager.createTask(postHandler(exchange)) == null) {
                     sendHasInteractions(exchange);
                 }
                 sendText(exchange, String.valueOf(manager.getTasks().size()), 201);
                 return;
-            case "UKNOWN":
+            case UNKNOWN:
                 sendNotFound(exchange, "URI was not accurate");
         }
     }

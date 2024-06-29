@@ -1,5 +1,6 @@
 package handlers;
 
+import Util.HandlerUtil;
 import adapters.DurationTypeAdapter;
 import adapters.LocalDateTimeTypeAdapter;
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import managers.task.InMemoryTaskManager;
 import managers.task.TaskManager;
+import model.EndPoint;
 import model.Subtask;
 
 import java.io.IOException;
@@ -26,10 +28,10 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         String method = exchange.getRequestMethod();
-        String endpoint = getEndpoint(path, method);
+        EndPoint endpoint = HandlerUtil.getEndpoint(path, method);
         int id;
         switch (endpoint) {
-            case "GET_TASK":
+            case GET_TASK:
                 id = Integer.parseInt(path.split("/")[2]);
                 Subtask subtask = manager.getSubtaskById(id);
                 if (subtask == null) {
@@ -37,10 +39,10 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 }
                 sendText(exchange, subtask.toString(), 200);
                 return;
-            case "GET_ALL":
+            case GET_ALL:
                 sendText(exchange, manager.getSubtasks().toString(), 200);
                 return;
-            case "DELETE_TASK":
+            case DELETE_TASK:
                 id = Integer.parseInt(path.split("/")[2]);
                 manager.deleteSubtaskById(id);
                 sendText(exchange, "Subtask with id: "
@@ -49,24 +51,24 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                         + "\nCurrent size of Subtasks: "
                         + manager.getSubtasks().size(), 200);
                 return;
-            case "DELETE_ALL":
+            case DELETE_ALL:
                 manager.deleteAllSubtasks();
                 sendText(exchange, "All Subtasks were deleted :)", 200);
                 return;
-            case "UPDATE":
+            case UPDATE:
                 if (manager.updateSubtasks(postHandler(exchange)) != null) {
                     sendText(exchange, "Task was updated :)", 201);
                     return;
                 }
                 sendHasInteractions(exchange);
                 sendNotFound(exchange, "Updated Subtask had a error");
-            case "CREATE":
+            case CREATE:
                 if (manager.createSubTask(postHandler(exchange)) == null) {
                     sendHasInteractions(exchange);
                 }
                 sendText(exchange, String.valueOf(manager.getSubtasks().size()), 201);
                 return;
-            case "UKNOWN":
+            case UNKNOWN:
                 sendNotFound(exchange, "URI was not accurate");
         }
     }

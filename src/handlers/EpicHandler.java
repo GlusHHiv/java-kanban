@@ -1,5 +1,6 @@
 package handlers;
 
+import Util.HandlerUtil;
 import adapters.DurationTypeAdapter;
 import adapters.LocalDateTimeTypeAdapter;
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import managers.task.InMemoryTaskManager;
 import managers.task.TaskManager;
+import model.EndPoint;
 import model.Epic;
 
 import java.io.IOException;
@@ -26,11 +28,11 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         String method = exchange.getRequestMethod();
-        String endpoint = getEndpoint(path, method);
-        int id;
+        EndPoint endpoint = HandlerUtil.getEndpoint(path, method);
+        Integer id;
         switch (endpoint) {
-            case "GET_TASK":
-                id = Integer.parseInt(path.split("/")[2]);
+            case GET_TASK:
+                id = HandlerUtil.getId(path);
                 Epic task = manager.getEpicById(id);
                 if (task == null) {
                     sendNotFound(exchange, "epic with id: " + id + " does not exist");
@@ -38,19 +40,19 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                 }
                 sendText(exchange, task.toString(), 200);
                 return;
-            case "GET_ALL":
+            case GET_ALL:
                 sendText(exchange, manager.getEpics().toString(), 200);
                 return;
-            case "GET_EPIC_SUBTASKS":
-                id = Integer.parseInt(path.split("/")[2]);
+            case GET_EPIC_SUBTASKS:
+                id = HandlerUtil.getId(path);
                 if (manager.getEpicSubtasks(id).isEmpty()) {
                     sendNotFound(exchange, "Epic with id:" + id + " does not exist");
                     return;
                 }
                 sendText(exchange, manager.getEpicSubtasks(id).toString(), 200);
                 return;
-            case "DELETE_TASK":
-                id = Integer.parseInt(path.split("/")[2]);
+            case DELETE_TASK:
+                id = HandlerUtil.getId(path);
                 manager.deleteEpicById(id);
                 sendText(exchange, "Epic with id: "
                         + id
@@ -58,25 +60,25 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                         + "\nCurrent size of Epics: "
                         + manager.getEpics().size(), 200);
                 return;
-            case "DELETE_ALL":
+            case DELETE_ALL:
                 manager.deleteAllEpics();
                 sendText(exchange, "All Epics were deleted :)", 200);
                 return;
-            case "UPDATE":
+            case UPDATE:
                 if (manager.updateEpic(postHandler(exchange)) != null) {
                     sendText(exchange, "Epic was updated :)", 201);
                     return;
                 }
                 sendHasInteractions(exchange);
                 return;
-            case "CREATE":
+            case CREATE:
                 if (manager.createEpic(postHandler(exchange)) == null) {
                     sendHasInteractions(exchange);
                     return;
                 }
                 sendText(exchange, String.valueOf(manager.getEpics().size()), 201);
                 return;
-            case "UKNOWN":
+            case UNKNOWN:
                 sendNotFound(exchange, "URI was not accurate");
         }
     }
