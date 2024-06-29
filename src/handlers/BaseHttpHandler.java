@@ -1,7 +1,6 @@
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
-import model.EndPoint;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
